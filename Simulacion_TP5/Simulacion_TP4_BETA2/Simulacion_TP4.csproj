@@ -80,15 +80,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Clases\AbstractDistribucionNormal.cs" />
-    <Compile Include="Clases\Clientes.cs" />
-    <Compile Include="Clases\EstrategiaDistribucionNormal.cs" />
-    <Compile Include="Clases\EstrategiaDistribucionPoisson.cs" />
-    <Compile Include="Clases\EstrategiaDistribucionUniforme.cs" />
-    <Compile Include="Clases\EstrategiaTipoDistribucion.cs" />
-    <Compile Include="Clases\Generador.cs" />
+    <Compile Include="Clases\EstrategiasGeneradores\AbstractDistribucionNormal.cs" />
+    <Compile Include="Clases\Clientes\ClienteLicencia.cs" />
+    <Compile Include="Clases\Clientes\ClienteMatricula.cs" />
+    <Compile Include="Clases\Clientes\Clientes.cs" />
+    <Compile Include="Clases\EstrategiasGeneradores\EstrategiaDistribucionNormal.cs" />
+    <Compile Include="Clases\EstrategiasGeneradores\EstrategiaDistribucionPoisson.cs" />
+    <Compile Include="Clases\EstrategiasGeneradores\EstrategiaDistribucionUniforme.cs" />
+    <Compile Include="Clases\EstrategiasGeneradores\EstrategiaTipoDistribucion.cs" />
+    <Compile Include="Clases\Eventos\Evento.cs" />
+    <Compile Include="Clases\Eventos\FinAtencionMatricula.cs" />
+    <Compile Include="Clases\Eventos\FinAtencionRenovacion.cs" />
+    <Compile Include="Clases\EstrategiasGeneradores\Generador.cs" />
+    <Compile Include="Clases\Eventos\LlegadaClienteMatricula.cs" />
+    <Compile Include="Clases\Eventos\LlegadaClienteRenovacion.cs" />
     <Compile Include="Clases\RenglonDistribucion.cs" />
     <Compile Include="Clases\Fila.cs" />
+    <Compile Include="Clases\Servidores\Servidor.cs" />
+    <Compile Include="Clases\Servidores\ServidorEspecial.cs" />
+    <Compile Include="Clases\Servidores\ServidorMatricula.cs" />
+    <Compile Include="Clases\Servidores\ServidorRenovacion.cs" />
     <Compile Include="Controlador\Gestor.cs" />
     <Compile Include="DataSet1.cs">
       <DependentUpon>DataSet1.xsd</DependentUpon>

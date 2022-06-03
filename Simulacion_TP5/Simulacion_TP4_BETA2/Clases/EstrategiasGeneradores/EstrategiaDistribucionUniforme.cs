@@ -20,7 +20,8 @@ namespace Simulacion_TP1.Clases
             double test;
             do
             {
-                test = parametroUno + random.NextDouble() * (parametroDos - parametroUno);//Este truncamiento ajusta a la cantidad de decimales requerida
+                double rnd = random.NextDouble();
+                test = parametroUno + rnd * (parametroDos - parametroUno);//Este truncamiento ajusta a la cantidad de decimales requerida
                 listaNumeroGenerados.Add(test);              // agrega el numero generado a la lista
 
 

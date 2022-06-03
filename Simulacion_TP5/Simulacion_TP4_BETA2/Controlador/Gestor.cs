@@ -18,6 +18,10 @@ namespace Simulacion_TP1.Controlador
         private Generador generadorLlegadaLicencia;
         private Generador generadorFinMatricula;
         private Generador generadorFinLicencia;
+        private List <double>listaLlegadaMatricula = new List<double>();
+        private List<double> listaLlegadaLicencia = new List<double>();
+        private List<double> listaFinMatricula = new List<double>();
+        private List<double> listaFinLicencia = new List<double>();
 
         public Pantalla Pantalla { get => pantalla; set => pantalla = value; }
         public int CantidadHoras { get => cantidadHoras; set => cantidadHoras = value; }
@@ -26,8 +30,12 @@ namespace Simulacion_TP1.Controlador
         public Generador GeneradorLlegadaLicencia { get => generadorLlegadaLicencia; set => generadorLlegadaLicencia = value; }
         public Generador GeneradorFinMatricula { get => generadorFinMatricula; set => generadorFinMatricula = value; }
         public Generador GeneradorFinLicencia { get => generadorFinLicencia; set => generadorFinLicencia = value; }
+        public List<double> ListaLlegadaMatricula { get => listaLlegadaMatricula; set => listaLlegadaMatricula = value; }
+        public List<double> ListaLlegadaLicencia { get => listaLlegadaLicencia; set => listaLlegadaLicencia = value; }
+        public List<double> ListaFinMatricula { get => listaFinMatricula; set => listaFinMatricula = value; }
+        public List<double> ListaFinLicencia { get => listaFinLicencia; set => listaFinLicencia = value; }
 
-        public Gestor(Pantalla pantalla, int cantidadHoras, int horaDesde, Generador generadorLlegadaMatricula, Generador generadorLlegadaLicencia, Generador generadorFinMatricula, Generador generadorFinLicencia)
+        public Gestor(Pantalla pantalla, int cantidadHoras, int horaDesde, Generador generadorLlegadaMatricula, Generador generadorLlegadaLicencia, Generador generadorFinMatricula, Generador generadorFinLicencia, List<double> listaLlegadaMatricula, List<double> listaLlegadaLicencia, List<double> listaFinMatricula, List<double> listaFinLicencia)
         {
             this.Pantalla = pantalla;
             this.CantidadHoras = cantidadHoras;
@@ -36,8 +44,16 @@ namespace Simulacion_TP1.Controlador
             this.GeneradorLlegadaLicencia = generadorLlegadaLicencia;
             this.GeneradorFinMatricula = generadorFinMatricula;
             this.GeneradorFinLicencia = generadorFinLicencia;
+            this.ListaLlegadaMatricula = listaLlegadaMatricula;
+            this.ListaLlegadaLicencia = listaLlegadaLicencia;
+            this.ListaFinMatricula = listaFinMatricula;
+            this.ListaFinLicencia = listaFinLicencia;
         }
 
+        public Gestor(Pantalla pantalla)
+        {
+            this.Pantalla = pantalla;
+        }
 
         public void tomarDatos(int cantidadHoras, int horaDesde)
         {
@@ -48,15 +64,19 @@ namespace Simulacion_TP1.Controlador
 
         public List<Fila> generarTablaSimulacion()
         {
-            Generador generadorLlegadaMatricula = new Generador("Poisson", 1000000000, 2.886, 0, 4, 1);
-            Generador generadorLlegadaLicencia = new Generador("Poisson", 1000000000, 4.846, 0, 4, 1);
-            Generador generadorFinMatricula = new Generador("Uniforme", 1000000000, 8.7, 15.2, 4, 1);
-            Generador generadorFinLicencia = new Generador("Normal", 1000000000, 16.7, 5, 4, 1);
+            Generador generadorLlegadaMatricula = new Generador("Poisson", 5000, 2.886, 0, 4, 1);
+            Generador generadorLlegadaLicencia = new Generador("Poisson", 5000, 4.846, 0, 4, 1);
+            Generador generadorFinMatricula = new Generador("Uniforme", 5000, 8.7, 15.2, 4, 1);
+            Generador generadorFinLicencia = new Generador("Normal", 5000, 16.7, 5, 4, 1);
+            this.listaLlegadaMatricula = generadorLlegadaMatricula.generarNumeros();
+            this.listaLlegadaLicencia = generadorLlegadaMatricula.generarNumeros();
+            this.listaFinMatricula = generadorLlegadaMatricula.generarNumeros();
+            this.listaFinLicencia = generadorLlegadaMatricula.generarNumeros();
             Fila filaNueva = null;
             List<Fila> listaFilasMuestra = new List<Fila>();
             for (int i = 0; i <= this.CantidadHoras; i++)
             {
-                filaNueva = generarRenglones(i, filaNueva, generadorLlegadaMatricula, generadorLlegadaLicencia, generadorFinMatricula, generadorFinLicencia);
+                filaNueva = generarRenglones(i, filaNueva, listaLlegadaMatricula, listaLlegadaLicencia, listaFinMatricula, listaFinLicencia);
                 if (this.HoraDesde <= i && i <= (this.HoraDesde + 400) || i == CantidadHoras)
                 {
                     listaFilasMuestra.Add(filaNueva);
@@ -66,251 +86,668 @@ namespace Simulacion_TP1.Controlador
             return listaFilasMuestra;
         }
 
-        public void generarNumeros(string funcion, double parametroUno, double parametroDos, int cantidadDecimales, int cantidadIntervalos)
+
+        private Fila generarRenglones(int i, Fila filaAnterior, List<double> listaLlegadaMatricula, List<double> listaLlegadaLicencia, List<double> listaFinMatricula, List<double> listaFinLicencia)
         {
-
-            this.generador = new Generador(funcion, cantidadNumeros, parametroUno, parametroDos, cantidadDecimales, cantidadIntervalos);
-            this.listaNumerosGenerados = new List<double>();
-            foreach (double numero in this.generador.generarNumeros())
-            {
-                this.listaNumerosGenerados.Add(ajustarDecimales(numero));
-            }
-
-        }
-
-
-        private Fila generarRenglones(int i, Fila filaAnterior, Generador generadorLlegadaMatricula, Generador generadorLlegadaLicencia, Generador generadorFinMatricula, Generador generadorFinLicencia)
-        {
-            Fila filaNueva;
+            Fila filaNueva = new Fila();
 
 
             if (i == 0)
             {
-                Clientes clienteActual = null;
-                string nombreClienteTomas = "";
-                string nombreClienteAlicia = "";
-                string nombreClienteLucia = "";
-                string nombreClienteMaria = "";
-                string nombreClienteManuel = "";
-                //Clientes clienteSiendoAtendidoTomas;
-                //Clientes clienteSiendoAtendidoAlicia;
-                //Clientes clienteSiendoAtendidoLucia;
-                //Clientes clienteSiendoAtendidoMaria;
-                //Clientes clienteSiendoAtendidoManuel;
-                List<Clientes> colaClientesMatricula = new List<Clientes>();
-                List<Clientes> colaClientesLicencia = new List<Clientes>();
-                Fila fila = new Fila(clienteActual,"Comienzo", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0, nombreClienteTomas, "", 0, nombreClienteAlicia, "", 0, nombreClienteLucia, "", 0, nombreClienteMaria, "", 0, nombreClienteManuel, colaClientesMatricula, colaClientesLicencia, 0);
+                double hora = 0;
+                Evento eventoActual = null;
+                Evento proximaLlegadaClienteMatricula = new LlegadaClienteMatricula(listaLlegadaMatricula[0]);
+                Evento proximaLlegadaClienteRenovacion = new LlegadaClienteRenovacion(listaLlegadaLicencia[0]);
+                Evento finAtencionMatricula = null;
+                Evento finAtencionRenovacion = null;
+                ServidorMatricula tomas = new ServidorMatricula("Libre");
+                ServidorMatricula alicia = new ServidorMatricula("Libre");
+                ServidorRenovacion lucia = new ServidorRenovacion("Libre");
+                ServidorRenovacion maria = new ServidorRenovacion("Libre");
+                ServidorEspecial manuel = new ServidorEspecial("Libre");
+                int colaMatricula = 0;
+                int colaRenovacion = 0;
+                int cantidadClientesMatriculaAtendidos = 0;
+                int cantidadClienteRenovacionAtendidos = 0;
+                List<ClienteMatricula> clientesMatriculaEnElSistema = new List<ClienteMatricula>();
+                List<ClienteLicencia> clientesLicenciaEnElSistema = new List<ClienteLicencia>();
+
+                Fila fila = new Fila(hora, eventoActual, proximaLlegadaClienteMatricula, proximaLlegadaClienteRenovacion, finAtencionMatricula, finAtencionRenovacion, tomas, alicia, lucia, maria, manuel, colaMatricula, colaRenovacion, cantidadClientesMatriculaAtendidos, cantidadClienteRenovacionAtendidos, clientesMatriculaEnElSistema, clientesLicenciaEnElSistema);
                 filaNueva = fila;
+                
             }
             else
             {
-                Clientes clienteActual = revisarClienteActual();
-                string evento = definirEvento(filaAnterior);
-                double hora = calcularHora(filaAnterior);
-                double rndLlegadaMatricula = generadorLlegadaMatricula.generarNumeros(); // REVISAR COMO TRABAJAMOS CON LOS RND
-                double tiempoEntreLlegadaMatricula = ;
-                double proximaLlegadaMatricula =  hora + tiempoEntreLlegadaMatricula;
-                double rndLlegadaLicencia = generadorRandomReposicion.NextDouble(); // REVISAR COMO TRABAJAMOS CON LOS RND
-                double tiempoEntreLlegadaLicencia = calcularReposicion(rndReposicion);
-                double proximaLlegadaLicencia = hora + tiempoEntreLlegadaLicencia;
-                double rndFinMatricula = filaAnterior.EnAlmacenamiento + reposicion - consumo; // REVISAR COMO TRABAJAMOS CON LOS RND
-                double tiempoHastaFinMatricula = ;
-                double finMatricula = hora + tiempoHastaFinMatricula;
-                double rndFinLicencia = obtenerKm(almacenamiento); // REVISAR COMO TRABAJAMOS CON LOS RND
-                double tiempoHastaFinLicencia = ;
-                double finLicencia = hora + tiempoHastaFinLicencia;
-                string estadoTomas = definirEstado("tomas", filaAnterior, evento, clienteActual);
-                int atendidosTomas = calcularAtendidos("tomas", filaAnterior);
-                string nombreClienteTomas = "";
-                string estadoAlicia = definirEstado("alicia", filaAnterior, evento);
-                int atendidosAlicia = calcularAtendidos("alicia", filaAnterior);
-                string nombreClienteAlicia = "";
-                string estadoLucia = definirEstado("lucia", filaAnterior, evento);
-                int atendidosLucia = calcularAtendidos("lucia", filaAnterior);
-                string nombreClienteLucia = "";
-                string estadoMaria = definirEstado("maria", filaAnterior, evento);
-                int atendidosMaria = calcularAtendidos("maria", filaAnterior);
-                string nombreClienteMaria = "";
-                string estadoManuel = definirEstado("manuel", filaAnterior, evento);
-                int atendidosManuel = calcularAtendidos("manuel", filaAnterior);
-                string nombreClienteManuel = "";
-                List<Clientes> colaClientesMatricula = revisarColaClientesMatricula();
-                List<Clientes> colaClientesLicencia = revisarColaClientesLicencia();
-                int contadorCliente = ;
 
 
+                Evento eventoActual = obtenerProximoEvento(filaAnterior.ProximaLlegadaClienteMatricula, filaAnterior.ProximaLlegadaClienteRenovacion1, filaAnterior.FinAtencionMatricula, filaAnterior.FinAtencionRenovacion);
+                Console.WriteLine(eventoActual.GetType().ToString());
+                switch (eventoActual.GetType().ToString())
+       
+                {
+                   
+                    case "Simulacion_TP1.Clases.LlegadaClienteMatricula":
+                        filaNueva = generarFilaLlegadaClienteMatricula(i, filaAnterior);
+                        
+                        break;
 
-                filaNueva = new Fila(clienteActual, evento, hora, rndLlegadaMatricula, tiempoEntreLlegadaMatricula, proximaLlegadaMatricula, rndLlegadaLicencia, tiempoEntreLlegadaLicencia, proximaLlegadaLicencia, rndFinMatricula, tiempoHastaFinMatricula,
-                    finMatricula, rndFinLicencia, tiempoHastaFinLicencia, finLicencia, estadoTomas, atendidosTomas, nombreClienteTomas, estadoAlicia, atendidosAlicia, nombreClienteAlicia, estadoLucia, atendidosLucia, nombreClienteLucia,
-                    estadoMaria, atendidosMaria, nombreClienteMaria, estadoManuel, atendidosManuel, nombreClienteManuel,
-                    colaClientesMatricula, colaClientesLicencia, contadorCliente);
+                    case "Simulacion_TP1.Clases.LlegadaClienteRenovacion":
+                        filaNueva = generarFilaLlegadaClienteLicencia(i, filaAnterior);
+                        break;
+
+                    case "Simulacion_TP1.Clases.FinAtencionMatricula":
+                        filaNueva = generarFilaFinClienteMatricula(i, filaAnterior);
+                        break;
+
+                    case "Simulacion_TP1.Clases.FinAtencionRenovacion":
+                        filaNueva = generarFilaFinClienteLicencia(i, filaAnterior);
+                        break;
+
+                    default:
+                        break;
+                }
+               
             }
             return filaNueva;
-
         }
 
-        public string definirEvento(Fila filaAnterior)
-        {
-            string evento = "";
-            List<double> proximosEventos = new List<double> { filaAnterior.ProximaLlegadaMatricula, filaAnterior.ProximaLlegadaLicencia, filaAnterior.FinMatricula, filaAnterior.FinLicencia };
-            double posicionProximoEvento = proximosEventos.IndexOf(proximosEventos.Min());
 
+
+        private Fila generarFilaLlegadaClienteMatricula(int i, Fila filaAnterior)
+        {
+            Fila filaNueva = filaAnterior;
+            filaNueva.EventoActual = filaAnterior.ProximaLlegadaClienteMatricula;
+            Evento proximaLlegadaClienteMatricula = new LlegadaClienteMatricula(ListaLlegadaMatricula[i]);
+            ClienteMatricula cliente = new ClienteMatricula("Esperando Atencion", filaAnterior.ProximaLlegadaClienteMatricula.Tiempo + filaAnterior.Hora);
+            filaNueva.ClientesMatriculaEnElSistema.Add(cliente);
+
+            Evento finAtencionRenovacion = filaAnterior.FinAtencionRenovacion;
+
+            if (filaAnterior.Tomas1.Estado == "Libre")
+            {
+                filaNueva.Tomas1.Estado = "Ocupado";
+
+                cliente.Estado = "Siendo Atendido";
+                filaNueva.ClientesMatriculaEnElSistema.Add(cliente);
+                Evento finAtencionMatricula = new FinAtencionMatricula(cliente, filaAnterior.Tomas1, listaFinMatricula[i]);
+                filaNueva.FinAtencionMatricula = finAtencionMatricula;
+
+
+                return filaNueva;
+            }
+
+            if (filaAnterior.Alicia1.Estado == "Libre")
+            {
+                filaNueva.Alicia1.Estado = "Ocupado";
+
+                cliente.Estado = "Siendo Atendido";
+                filaNueva.ClientesMatriculaEnElSistema.Add(cliente);
+                Evento finAtencionMatricula = new FinAtencionMatricula(cliente, filaAnterior.Alicia1, listaFinMatricula[i]);
+                filaNueva.FinAtencionMatricula = finAtencionMatricula;
+
+
+                return filaNueva;
+            }
+
+            if (filaAnterior.Manuel1.Estado == "Libre")
+            {
+                filaNueva.Manuel1.Estado = "Ocupado";
+
+                cliente.Estado = "Siendo Atendido";
+                filaNueva.ClientesMatriculaEnElSistema.Add(cliente);
+                Evento finAtencionMatricula = new FinAtencionMatricula(cliente, filaAnterior.Manuel1, listaFinMatricula[i]);
+                filaNueva.FinAtencionMatricula = finAtencionMatricula;
+
+
+                return filaNueva;
+            }
+
+
+
+            filaNueva.ColaMatricula++;
+            return filaNueva;
+        }
+
+        private Fila generarFilaLlegadaClienteLicencia(int i, Fila filaAnterior)
+        {
+            Fila filaNueva = filaAnterior;
+            filaNueva.EventoActual = filaAnterior.ProximaLlegadaClienteRenovacion1;
+            Evento proximaLlegadaClienteLicencia = new LlegadaClienteRenovacion(ListaLlegadaLicencia[i]);
+            ClienteLicencia cliente = new ClienteLicencia("Esperando Atencion", filaAnterior.ProximaLlegadaClienteRenovacion1.Tiempo + filaAnterior.Hora);
+            filaNueva.ClientesLicenciaEnElSistema.Add(cliente);
+
+            Evento finAtencionRenovacion = filaAnterior.FinAtencionRenovacion;
+
+            if (filaAnterior.Lucia1.Estado == "Libre")
+            {
+                filaNueva.Lucia1.Estado = "Ocupado";
+
+                cliente.Estado = "Siendo Atendido";
+                filaNueva.ClientesLicenciaEnElSistema.Add(cliente);
+                Evento finAtencionLicencia= new FinAtencionRenovacion(cliente, filaAnterior.Lucia1, listaFinLicencia[i]);
+                filaNueva.FinAtencionRenovacion = finAtencionLicencia;
+
+
+                return filaNueva;
+            }
+
+            if (filaAnterior.Maria1.Estado == "Libre")
+            {
+                filaNueva.Maria1.Estado = "Ocupado";
+
+                cliente.Estado = "Siendo Atendido";
+                filaNueva.ClientesLicenciaEnElSistema.Add(cliente);
+                Evento finAtencionLicencia = new FinAtencionRenovacion(cliente, filaAnterior.Maria1, listaFinLicencia[i]);
+                filaNueva.FinAtencionRenovacion = finAtencionLicencia;
+
+
+                return filaNueva;
+            }
+
+            if (filaAnterior.Manuel1.Estado == "Libre")
+            {
+                filaNueva.Manuel1.Estado = "Ocupado";
+
+                cliente.Estado = "Siendo Atendido";
+                filaNueva.ClientesLicenciaEnElSistema.Add(cliente);
+                Evento finAtencionLicencia = new FinAtencionRenovacion(cliente, filaAnterior.Manuel1, listaFinLicencia[i]);
+                filaNueva.FinAtencionRenovacion = finAtencionLicencia;
+
+
+                return filaNueva;
+            }
+
+
+
+            filaNueva.ColaRenovacion++;
+            return filaNueva;
+        }
+
+        private Fila generarFilaFinClienteLicencia(int i, Fila filaAnterior)
+        {
+            Fila filaNueva = filaAnterior;
+            filaNueva.EventoActual = filaAnterior.FinAtencionRenovacion;
+            Servidor servidorImplicado = filaAnterior.FinAtencionRenovacion.Servidor;
+            ClienteLicencia clienteImplicado = (ClienteLicencia)filaAnterior.FinAtencionRenovacion.ClienteMatricula;
+            filaNueva.ClientesLicenciaEnElSistema.Remove(clienteImplicado);
+            if (servidorImplicado == filaNueva.Manuel1)
+            {
+                if (filaNueva.ColaMatricula > 0 && filaNueva.ColaRenovacion > 0)
+                {
+                    List<double> horasLlegadaLicencia = new List<double>();
+                    foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            horasLlegadaLicencia.Add(item.HoraIngreso);
+                        }
+
+                    }
+
+
+                    List<Clientes> clientesLicenciaEsperandoAtencion = new List<Clientes>();
+                    foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            clientesLicenciaEsperandoAtencion.Add(item);
+                        }
+
+                    }
+
+
+                    List<double> horasLlegadaMatricula = new List<double>();
+                    foreach (var item in filaAnterior.ClientesMatriculaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            horasLlegadaMatricula.Add(item.HoraIngreso);
+                        }
+
+                    }
+
+                    List<Clientes> clientesMatriculaEsperandoAtencion = new List<Clientes>();
+                    foreach (var item in filaAnterior.ClientesMatriculaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            clientesMatriculaEsperandoAtencion.Add(item);
+                        }
+
+                    }
+
+                    int indiceMenorLicencia = horasLlegadaLicencia.IndexOf(horasLlegadaLicencia.Min());
+                    ClienteLicencia menorClienteLicencia = filaAnterior.ClientesLicenciaEnElSistema[indiceMenorLicencia];
+
+                    int indiceMenorMatricula = horasLlegadaMatricula.IndexOf(horasLlegadaMatricula.Min());
+                    ClienteMatricula menorClienteMatricula = filaAnterior.ClientesMatriculaEnElSistema[indiceMenorMatricula];
+
+
+                    if (menorClienteLicencia.HoraIngreso > menorClienteMatricula.HoraIngreso)
+                    {
+                        foreach (var item in filaAnterior.ClientesMatriculaEnElSistema)
+                        {
+                            if (item == menorClienteMatricula)
+                            {
+                                item.Estado = "Siendo Atendido";
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                        {
+                            if (item == menorClienteLicencia)
+                            {
+                                item.Estado = "Siendo Atendido";
+                            }
+                        }
+                    }
+                    filaNueva.FinAtencionRenovacion = new FinAtencionRenovacion(menorClienteMatricula, servidorImplicado, listaFinMatricula[i]);
+                    return filaNueva;
+                }
+
+                if (filaNueva.ColaRenovacion > 0)
+                {
+                    List<double> horasLlegadaLicencia = new List<double>();
+                    foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            horasLlegadaLicencia.Add(item.HoraIngreso);
+                        }
+
+                    }
+
+
+                    List<Clientes> clientesLicenciaEsperandoAtencion = new List<Clientes>();
+                    foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            clientesLicenciaEsperandoAtencion.Add(item);
+                        }
+
+                    }
+
+                    int indiceMenorLicencia = horasLlegadaLicencia.IndexOf(horasLlegadaLicencia.Min());
+                    ClienteLicencia menorClienteLicencia = filaAnterior.ClientesLicenciaEnElSistema[indiceMenorLicencia];
+                    foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                    {
+                        if (item == menorClienteLicencia)
+                        {
+                            item.Estado = "Siendo Atendido";
+                        }
+                    }
+                    filaNueva.FinAtencionRenovacion = new FinAtencionRenovacion(menorClienteLicencia, servidorImplicado, listaFinLicencia[i]);
+                    return filaNueva;
+                }
+
+                if (filaNueva.ColaMatricula > 0)
+                {
+
+
+                    List<double> horasLlegadaMatricula = new List<double>();
+                    foreach (var item in filaAnterior.ClientesMatriculaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            horasLlegadaMatricula.Add(item.HoraIngreso);
+                        }
+
+                    }
+
+
+                    List<Clientes> clientesMatriculaEsperandoAtencion = new List<Clientes>();
+                    foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            clientesMatriculaEsperandoAtencion.Add(item);
+                        }
+
+                    }
+
+                    int indiceMenorMatricula = horasLlegadaMatricula.IndexOf(horasLlegadaMatricula.Min());
+                    ClienteMatricula menorClienteMatricula = filaAnterior.ClientesMatriculaEnElSistema[indiceMenorMatricula];
+                    foreach (var item in filaAnterior.ClientesMatriculaEnElSistema)
+                    {
+                        if (item == menorClienteMatricula)
+                        {
+                            item.Estado = "Siendo Atendido";
+                        }
+                    }
+                    filaNueva.FinAtencionRenovacion = new FinAtencionRenovacion(menorClienteMatricula, servidorImplicado, listaFinMatricula[i]);
+                    return filaNueva;
+                }
+                else
+                {
+                    filaNueva.Manuel1.Estado = "Libre";
+                }
+            }
+
+            else
+            {
+                if (filaAnterior.ColaMatricula > 0)
+                {
+                    List<double> horasLlegadaMatricula = new List<double>();
+                    foreach (var item in filaAnterior.ClientesMatriculaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            horasLlegadaMatricula.Add(item.HoraIngreso);
+                        }
+
+                    }
+
+
+                    List<Clientes> clientesMatriculaEsperandoAtencion = new List<Clientes>();
+                    foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            clientesMatriculaEsperandoAtencion.Add(item);
+                        }
+
+                    }
+
+                    int indiceMenorMatricula = horasLlegadaMatricula.IndexOf(horasLlegadaMatricula.Min());
+                    ClienteMatricula menorClienteMatricula = filaAnterior.ClientesMatriculaEnElSistema[indiceMenorMatricula];
+                    foreach (var item in filaAnterior.ClientesMatriculaEnElSistema)
+                    {
+                        if (item == menorClienteMatricula)
+                        {
+                            item.Estado = "Siendo Atendido";
+                        }
+                    }
+                    filaNueva.FinAtencionRenovacion = new FinAtencionRenovacion(menorClienteMatricula, servidorImplicado, listaFinLicencia[i]);
+                    return filaNueva;
+                }
+                else
+                {
+                    if (servidorImplicado == filaNueva.Lucia1)
+                    {
+                        filaNueva.Lucia1.Estado = "Libre";
+                    }
+                    else
+                    {
+                        filaNueva.Maria1.Estado = "Libre";
+                    }
+                    return filaNueva;
+                }
+
+            }
+            return filaNueva;
+        }
+
+        private Fila generarFilaFinClienteMatricula(int i, Fila filaAnterior)
+        {
+
+            Fila filaNueva = filaAnterior;
+            filaNueva.EventoActual = filaAnterior.FinAtencionMatricula;
+            Servidor servidorImplicado = filaAnterior.FinAtencionMatricula.Servidor;
+            ClienteMatricula clienteImplicado = (ClienteMatricula)filaAnterior.FinAtencionMatricula.ClienteMatricula;
+            filaNueva.ClientesMatriculaEnElSistema.Remove(clienteImplicado);
+            if (servidorImplicado == filaNueva.Manuel1)
+            {
+                if (filaNueva.ColaMatricula > 0 && filaNueva.ColaRenovacion > 0)
+                {
+                    List<double> horasLlegadaLicencia = new List<double>();
+                    foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            horasLlegadaLicencia.Add(item.HoraIngreso);
+                        }
+                        
+                    }
+
+
+                    List<Clientes> clientesLicenciaEsperandoAtencion = new List<Clientes>();
+                    foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            clientesLicenciaEsperandoAtencion.Add(item);
+                        }
+                        
+                    }
+
+
+                    List<double> horasLlegadaMatricula = new List<double>();
+                    foreach (var item in filaAnterior.ClientesMatriculaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            horasLlegadaMatricula.Add(item.HoraIngreso);
+                        }
+
+                    }
+
+                    List<Clientes> clientesMatriculaEsperandoAtencion = new List<Clientes>();
+                    foreach (var item in filaAnterior.ClientesMatriculaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            clientesMatriculaEsperandoAtencion.Add(item);
+                        }
+
+                    }
+
+                    int indiceMenorLicencia = horasLlegadaLicencia.IndexOf(horasLlegadaLicencia.Min());
+                    ClienteLicencia menorClienteLicencia = filaAnterior.ClientesLicenciaEnElSistema[indiceMenorLicencia];
+
+                    int indiceMenorMatricula = horasLlegadaMatricula.IndexOf(horasLlegadaMatricula.Min());
+                    ClienteMatricula menorClienteMatricula = filaAnterior.ClientesMatriculaEnElSistema[indiceMenorMatricula];
+                  
+
+                    if (menorClienteLicencia.HoraIngreso > menorClienteMatricula.HoraIngreso)
+                    {
+                        foreach (var item in filaAnterior.ClientesMatriculaEnElSistema)
+                        {
+                            if (item == menorClienteMatricula)
+                            {
+                                item.Estado = "Siendo Atendido";
+                            }
+                        }
+                        
+                    }
+                    else
+                    {
+                        foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                        {
+                            if (item == menorClienteLicencia)
+                            {
+                                item.Estado = "Siendo Atendido";
+                            }
+                        }
+                    }
+                    filaNueva.FinAtencionMatricula = new FinAtencionMatricula(menorClienteMatricula, servidorImplicado, listaFinMatricula[i]);
+                    return filaNueva;
+                }
+
+                if (filaNueva.ColaRenovacion > 0)
+                {
+                    List<double> horasLlegadaLicencia = new List<double>();
+                    foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            horasLlegadaLicencia.Add(item.HoraIngreso);
+                        }
+
+                    }
+
+
+                    List<Clientes> clientesLicenciaEsperandoAtencion = new List<Clientes>();
+                    foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            clientesLicenciaEsperandoAtencion.Add(item);
+                        }
+
+                    }
+
+                    int indiceMenorLicencia = horasLlegadaLicencia.IndexOf(horasLlegadaLicencia.Min());
+                    ClienteLicencia menorClienteLicencia = filaAnterior.ClientesLicenciaEnElSistema[indiceMenorLicencia];
+                    foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                    {
+                        if (item == menorClienteLicencia)
+                        {
+                            item.Estado = "Siendo Atendido";
+                        }
+                    }
+                    filaNueva.FinAtencionRenovacion = new FinAtencionRenovacion(menorClienteLicencia, servidorImplicado, listaFinLicencia[i]);
+                    return filaNueva;
+                }
+
+                if (filaNueva.ColaMatricula > 0)
+                {
+
+                
+                    List<double> horasLlegadaMatricula = new List<double>();
+                    foreach (var item in filaAnterior.ClientesMatriculaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            horasLlegadaMatricula.Add(item.HoraIngreso);
+                        }
+
+                    }
+
+
+                    List<Clientes> clientesMatriculaEsperandoAtencion = new List<Clientes>();
+                    foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            clientesMatriculaEsperandoAtencion.Add(item);
+                        }
+
+                    }
+
+                    int indiceMenorMatricula = horasLlegadaMatricula.IndexOf(horasLlegadaMatricula.Min());
+                    ClienteMatricula menorClienteMatricula = filaAnterior.ClientesMatriculaEnElSistema[indiceMenorMatricula];
+                    foreach (var item in filaAnterior.ClientesMatriculaEnElSistema)
+                    {
+                        if (item == menorClienteMatricula)
+                        {
+                            item.Estado = "Siendo Atendido";
+                        }
+                    }
+                    filaNueva.FinAtencionMatricula = new FinAtencionMatricula(menorClienteMatricula, servidorImplicado, listaFinMatricula[i]);
+                    return filaNueva;
+                }
+                else
+                {
+                    filaNueva.Manuel1.Estado = "Libre";
+                }
+            }
+
+            else
+            {
+                if (filaAnterior.ColaMatricula > 0)
+                {
+                    List<double> horasLlegadaMatricula = new List<double>();
+                    foreach (var item in filaAnterior.ClientesMatriculaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            horasLlegadaMatricula.Add(item.HoraIngreso);
+                        }
+
+                    }
+
+
+                    List<Clientes> clientesMatriculaEsperandoAtencion = new List<Clientes>();
+                    foreach (var item in filaAnterior.ClientesLicenciaEnElSistema)
+                    {
+                        if (item.Estado == "Esperando Atencion")
+                        {
+                            clientesMatriculaEsperandoAtencion.Add(item);
+                        }
+
+                    }
+
+                    int indiceMenorMatricula = horasLlegadaMatricula.IndexOf(horasLlegadaMatricula.Min());
+                    ClienteMatricula menorClienteMatricula = filaAnterior.ClientesMatriculaEnElSistema[indiceMenorMatricula];
+                    foreach (var item in filaAnterior.ClientesMatriculaEnElSistema)
+                    {
+                        if (item == menorClienteMatricula)
+                        {
+                            item.Estado = "Siendo Atendido";
+                        }
+                    }
+                    filaNueva.FinAtencionMatricula = new FinAtencionMatricula(menorClienteMatricula, servidorImplicado, listaFinLicencia[i]);
+                    return filaNueva;
+                }
+                else
+                {
+                    if (servidorImplicado == filaNueva.Tomas1)
+                    {
+                        filaNueva.Tomas1.Estado = "Libre";
+                    }
+                    else
+                    {
+                        filaNueva.Alicia1.Estado = "Libre";
+                    }
+                    return filaNueva;
+                }
+                
+            }
+            return filaNueva;
+        }
+
+       
+            
+
+        public Evento obtenerProximoEvento( Evento proximaLlegadaClienteMatricula, Evento proximaLlegadaClienteRenovacion, Evento finAtencionMatricula, Evento finAtencionRenovacion)
+        {
+            List<double> proximosEventos = new List<double>();
+            if (finAtencionMatricula == null || finAtencionRenovacion == null)
+            {
+                proximosEventos = new List<double> { proximaLlegadaClienteMatricula.Tiempo, proximaLlegadaClienteRenovacion.Tiempo };
+            }
+            else
+            {
+                proximosEventos = new List<double> { proximaLlegadaClienteMatricula.Tiempo, proximaLlegadaClienteRenovacion.Tiempo, finAtencionMatricula.Tiempo, finAtencionRenovacion.Tiempo };
+            }
+            
+
+            double proximoEventoDouble = proximosEventos.Min();
+            double posicionProximoEvento = proximosEventos.IndexOf(proximosEventos.Min());
+            Evento proximoEvento = null;
+          
             switch (posicionProximoEvento)
             {
                 case 0:
-                    evento = "Llegada Cliente" + filaAnterior.ContadorCliente + " para Matricula";
+                    proximoEvento = proximaLlegadaClienteMatricula;
                     break;
                 case 1:
-                    evento = "Llegada Cliente" + filaAnterior.ContadorCliente + " para Licencia";
+                    proximoEvento = proximaLlegadaClienteRenovacion;
                     break;
                 case 2:
-                    evento = "Fin Atención Cliente" + filaAnterior.ContadorCliente + " para Matricula";
+                    proximoEvento = finAtencionMatricula;
                     break;
                 case 3:
-                    evento = "Fin Atención Cliente" + filaAnterior.ContadorCliente + " para Licencia";
+                    proximoEvento = finAtencionRenovacion;
                     break;
 
             }
-
-            return evento;
-        }
-
-
-        public double calcularHora(Fila filaAnterior)
-        {
-            List<double> proximosEventos = new List<double> { filaAnterior.ProximaLlegadaMatricula, filaAnterior.ProximaLlegadaLicencia, filaAnterior.FinMatricula, filaAnterior.FinLicencia };
-
-            double proximoEvento = proximosEventos.Min();
-
             return proximoEvento;
         }
 
-        public string definirEstado(string nombre, Fila filaAnterior, string evento, Clientes clienteActual)
-        {
-            string estado = "";
+      
 
-            switch (nombre)
-            {
-                case "tomas":
-                    if (filaAnterior.ClienteSiendoAtendidoTomas == clienteActual.Nombre)    // COMPROBAR SI ES LLEGADA O FIN DE ATENCION
-                    {
-
-                    }
-                    estado = ;
-                    break;
-                case "alicia":
-                    estado = "Llegada Cliente" + filaAnterior.ContadorCliente + " para Licencia";
-                    break;
-                case "lucia":
-                    estado = "Fin Atención Cliente" + filaAnterior.ContadorCliente + " para Matricula";
-                    break;
-                case "maria":
-                    estado = "Fin Atención Cliente" + filaAnterior.ContadorCliente + " para Licencia";
-                    break;
-                case "manuel":
-                    estado = "Fin Atención Cliente" + filaAnterior.ContadorCliente + " para Licencia";
-                    break;
-
-            }
-             return estado;
-        }
-
-        public 
-
-        public void borrarFila(RenglonDistribucion renglon, List<RenglonDistribucion> tablaProbabilidad)
-        {
-            tablaProbabilidad.Remove(renglon);
-        }
+       
         public void agregarFila(double cantidad, double probabilidad, List<RenglonDistribucion> tablaProbabilidad)
         {
             RenglonDistribucion renglon = new RenglonDistribucion(cantidad, probabilidad);
             tablaProbabilidad.Add(renglon);
         }
 
-
-        private int hayExceso(double ks)
-        {
-            if (ks > 0)
-            {
-                return 1;
-            }
-            return 0;
-        }
-
-
-        //private double calcularReposicion(double rndReposicion)
-        //{
-        //    if (rndReposicion <= 0.599)
-        //    {
-        //        return 8000;
-        //    }
-        //    if (rndReposicion <= 0.999)
-        //    {
-        //        return 11000;
-        //    }
-        //    else
-        //    {
-        //        return -1;
-        //    }
-        //}
-        private double calcularReposicion(double rndReposicion)
-        {
-            double cantidad = -1;
-            foreach (RenglonDistribucion renglon in this.tablaProbabilidadReposicion)
-            {
-                if (rndReposicion < renglon.Hasta)
-                {
-                    cantidad = renglon.Cantidad;
-                    break;
-                }
-            }
-            return cantidad;
-        }
-
-        private double calcularConsumo(double rndConsumo)
-        {
-            double cantidad = -1;
-            foreach (RenglonDistribucion renglon in this.tablaProbabilidadConsumo)
-            {
-                if (rndConsumo < renglon.Hasta)
-                {
-                    cantidad = renglon.Cantidad;
-                    break;
-                }
-            }
-            return cantidad;
-        }
-        //private double calcularConsumo(double rndConsumo)
-        //{
-        //    if (rndConsumo <= 0.049)
-        //    {
-        //        return 6000;
-        //    }
-        //    if (rndConsumo <= 0.199)
-        //    {
-        //        return 7000;
-        //    }
-        //    if (rndConsumo <= 0.399)
-        //    {
-        //        return 8000;
-        //    }
-        //    if (rndConsumo <= 0.699)
-        //    {
-        //        return 9000;
-        //    }
-        //    if (rndConsumo <= 0.899)
-        //    {
-        //        return 10000;
-        //    }
-        //    if (rndConsumo <= 0.999)
-        //    {
-        //        return 11000;
-        //    }
-        //    else
-        //    {
-        //        return -1;
-        //    }
-        //}
 
     }
 }

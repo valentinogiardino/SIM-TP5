@@ -1,9 +1,0 @@
-C:\Users\valen\Downloads\Simulacion_TP5\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP5.csprojAssemblyReference.cache
-C:\Users\valen\Downloads\Simulacion_TP5\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP1.Pantalla.resources
-C:\Users\valen\Downloads\Simulacion_TP5\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP1.Properties.Resources.resources
-C:\Users\valen\Downloads\Simulacion_TP5\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP5.csproj.GenerateResource.cache
-C:\Users\valen\Downloads\Simulacion_TP5\Simulacion_TP4_BETA2\obj\Debug\RdlCompile.cache
-C:\Users\valen\Downloads\Simulacion_TP5\Simulacion_TP4_BETA2\obj\Debug\RdlCompile.compiled
-C:\Users\valen\Downloads\Simulacion_TP5\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP5.csproj.CoreCompileInputs.cache
-C:\Users\valen\Downloads\Simulacion_TP5\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP1.exe
-C:\Users\valen\Downloads\Simulacion_TP5\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP1.pdb

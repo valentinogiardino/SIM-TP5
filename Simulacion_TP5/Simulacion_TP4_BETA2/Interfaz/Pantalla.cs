@@ -36,17 +36,7 @@ namespace Simulacion_TP1
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void btnGenerar_Click(object sender, EventArgs e)
-        {
-
-            int cantidadHoras = int.Parse(txtCantidadHoras.Text);
-            int horaDesde = int.Parse(txtHoraDesde.Text);
-
-            this.gestor.tomarDatos(cantidadHoras, horaDesde);
-
-            cargarTabla();
-
-        }        
+ 
 
         //public void cargarTabla()
         //{
@@ -59,16 +49,18 @@ namespace Simulacion_TP1
         {
             List<Fila> fila = gestor.generarTablaSimulacion();    //Se le delega al gestor la generacion de la tabla
             dataGridView1.DataSource = fila;
-             
-            dataGridView1.Columns[5].HeaderText = "En Almacenamiento";
-            dataGridView1.Columns[9].HeaderText = "Costo Total";
-            dataGridView1.Columns[10].HeaderText = "Costo Acumulado";
-            dataGridView1.Columns[11].HeaderText = "Promedio";
-            dataGridView1.Columns[12].HeaderText = "Hay Exceso";
-            dataGridView1.Columns[13].HeaderText = "Exceso Acumulado";
 
             dataGridView1.Refresh();
         }
-        
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            int cantidadHoras = int.Parse(txtCantidadHoras.Text);
+            int horaDesde = int.Parse(txtHoraDesde.Text);
+
+            this.gestor.tomarDatos(cantidadHoras, horaDesde);
+
+            cargarTabla();
+        }
     }
 }
