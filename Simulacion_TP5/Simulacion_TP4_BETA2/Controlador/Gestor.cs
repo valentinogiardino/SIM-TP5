@@ -187,6 +187,10 @@ namespace Simulacion_TP1.Controlador
                 Evento finAtencionRenovacionManuel = null;
 
 
+                Evento descanso = new Evento("descanso", 180);
+                Evento finDelDia = new Evento("finDelDia", 480);
+
+
                 Servidor tomas = new Servidor("Tomas", "Libre", 0);
                 Servidor alicia = new Servidor("Alicia", "Libre", 0);
 
@@ -195,8 +199,6 @@ namespace Simulacion_TP1.Controlador
 
                 Servidor manuel = new Servidor("Manuel", "Libre", 0);
 
-                Evento descanso = new Evento("descanso", tomas, 180, 30); // Mandar 2 parametros por pantalla (a que hora comienza el descanso, duracion del descanso) ===> van a reemplazar el 180 y el 30
-                Evento finDelDia = new Evento("finDelDia", 480); // Mandar 1 parametro por pantalla (cuanto dura la jornada laboral)
 
                 int colaMatricula = 0;
                 int colaRenovacion = 0;
@@ -220,58 +222,27 @@ namespace Simulacion_TP1.Controlador
             {
 
 
-                Evento eventoActual = obtenerProximoEvento(filaAnterior.ProximaLlegadaClienteMatricula, filaAnterior.ProximaLlegadaClienteRenovacion1, filaAnterior.FinAtencionMatriculaTomas, filaAnterior.FinAtencionMatriculaAlicia, 
-                    filaAnterior.FinAtencionMatriculaManuel, filaAnterior.FinAtencionRenovacionLucia, filaAnterior.FinAtencionRenovacionMaria, filaAnterior.FinAtencionRenovacionManuel, 
-                    filaAnterior.Descanso, filaAnterior.FinDelDia);
+                Evento eventoActual = obtenerProximoEvento(filaAnterior.ProximaLlegadaClienteMatricula, filaAnterior.ProximaLlegadaClienteRenovacion1, filaAnterior.FinAtencionMatriculaTomas, filaAnterior.FinAtencionMatriculaAlicia, filaAnterior.FinAtencionMatriculaManuel, filaAnterior.FinAtencionRenovacionLucia, filaAnterior.FinAtencionRenovacionLucia, filaAnterior.FinAtencionRenovacionMaria, filaAnterior.FinAtencionRenovacionManuel, filaAnterior.Descanso, filaAnterior.FinDelDia);
                 Console.WriteLine(eventoActual.GetType().ToString());
                 switch (eventoActual.Nombre)
-
+       
                 {
-
+                   
                     case "proximaLLegadaClienteMatricula":
                         filaNueva = generarFilaLlegadaClienteMatricula(filaAnterior);
-
+                        
                         break;
 
                     case "proximaLlegadaClienteRenovacion":
                         filaNueva = generarFilaLlegadaClienteRenovacion(filaAnterior);
                         break;
 
-                   /* case "Simulacion_TP1.Clases.FinAtencionMatricula":
+                    case "Simulacion_TP1.Clases.FinAtencionMatricula":
                         filaNueva = generarFilaFinClienteMatricula(filaAnterior);
-                        break;
-                   */
-
-                    case "finAtencionMatriculaTomas":
-                        filaNueva = generarFilaFinClienteMatriculaTomas(filaAnterior);
-                        break;
-
-                    case "finAtencionMatriculaAlicia":
-                        filaNueva = generarFilaFinClienteMatriculaAlicia(filaAnterior);
                         break;
 
                     case "finAtencionRenovacionLucia":
                         filaNueva = generarFilaFinClienteRenovacionLucia(filaAnterior);
-                        break;
-
-                    case "finAtencionRenovacionMaria":
-                        filaNueva = generarFilaFinClienteRenovacionMaria(filaAnterior);
-                        break;
-
-                    case "finAtencionMatriculaManuel":
-                        filaNueva = generarFilaFinClienteMatriculaManuel(filaAnterior);
-                        break;
-
-                    case "finAtencionRenovacionManuel":
-                        filaNueva = generarFilaFinClienteRenovacionManuel(filaAnterior);
-                        break;
-
-                    case "descanso":
-                        filaNueva = generarFilaDescanso(filaAnterior);
-                        break;
-
-                    case "finDelDia":
-                        filaNueva = generarFilaFinDelDia(filaAnterior);
                         break;
 
                     default:
@@ -282,16 +253,7 @@ namespace Simulacion_TP1.Controlador
             return filaNueva;
         }
 
-        private Fila generarFilaFinDelDia(Fila filaAnterior)
-        {
-            throw new NotImplementedException();
-        }
 
-        private Fila generarFilaDescanso(Fila filaAnterior)
-        {
-
-            throw new NotImplementedException();
-        }
 
         private Fila generarFilaLlegadaClienteMatricula(Fila filaAnterior)
         {
@@ -304,7 +266,7 @@ namespace Simulacion_TP1.Controlador
 
             Cliente cliente = new Cliente("matricula", "Esperando Atencion", filaNueva.Hora);
 
-            if (filaAnterior.Tomas1.Estado == "Libre")  //&& filaAnterior.Tomas1.descansoPendiente = false) Habria que agregar un atributo en el servidor que sea una bandera para saber si tiene un descanso pendiente
+            if (filaAnterior.Tomas1.Estado == "Libre")
             {   
                 //COMENZAR ATENCION
                 filaNueva.Tomas1.Estado = "Ocupado"; //Cambiar Estado del Servidor a Ocupado
@@ -412,68 +374,12 @@ namespace Simulacion_TP1.Controlador
             return filaNueva;
         }
 
-
-        private Fila generarFilaFinClienteMatriculaTomas(Fila filaAnterior)
-        {
-            Fila filaNueva = filaAnterior;
-            filaNueva.EventoActual = filaAnterior.FinAtencionMatriculaTomas;
-            Cliente clienteImplicado = filaAnterior.FinAtencionMatriculaTomas.ClienteMatricula;
-            filaNueva.ClientesMatriculaEnElSistema.Remove(clienteImplicado);
-            filaNueva.Estadistica.CantidadClientesMatriculaAtendidos++;
-
-
-            if (filaAnterior.ColaMatricula > 0)
-            {
-                Cliente cliente = buscarProximoCliente(filaAnterior);
-                cliente.Estado = "Siendo Atendido";
-                Evento finAtencionMatricula = new Evento("finAtencionRenovacionTomas", cliente, filaAnterior.Tomas1, obtenerProximoFinAtencionMatricula() + filaAnterior.Hora);
-                filaNueva.FinAtencionMatriculaTomas = finAtencionMatricula;
-                filaNueva.ColaMatricula--;
-            }
-            else
-            {
-                filaNueva.Tomas1.Estado = "Libre";
-                filaNueva.FinAtencionMatriculaTomas = null;
-            }
-
-
-            return filaNueva;
-        }
-
-
-        private Fila generarFilaFinClienteMatriculaAlicia(Fila filaAnterior)
-        {
-            Fila filaNueva = filaAnterior;
-            filaNueva.EventoActual = filaAnterior.FinAtencionMatriculaAlicia;
-            Cliente clienteImplicado = filaAnterior.FinAtencionMatriculaAlicia.ClienteMatricula;
-            filaNueva.ClientesMatriculaEnElSistema.Remove(clienteImplicado);
-            filaNueva.Estadistica.CantidadClientesMatriculaAtendidos++;
-
-
-            if (filaAnterior.ColaMatricula > 0)
-            {
-                Cliente cliente = buscarProximoCliente(filaAnterior);
-                cliente.Estado = "Siendo Atendido";
-                Evento finAtencionMatricula = new Evento("finAtencionRenovacionAlicia", cliente, filaAnterior.Alicia1, obtenerProximoFinAtencionMatricula() + filaAnterior.Hora);
-                filaNueva.FinAtencionMatriculaAlicia = finAtencionMatricula;
-                filaNueva.ColaMatricula--;
-            }
-            else
-            {
-                filaNueva.Alicia1.Estado = "Libre";
-                filaNueva.FinAtencionMatriculaAlicia = null;
-            }
-
-
-            return filaNueva;
-        }
-
-
         private Fila generarFilaFinClienteRenovacionLucia(Fila filaAnterior)
         {
             Fila filaNueva = filaAnterior;
             filaNueva.EventoActual = filaAnterior.FinAtencionRenovacionLucia;
-            Cliente clienteImplicado = filaAnterior.FinAtencionRenovacionLucia.ClienteMatricula;   // REVISAR ClienteMatricula (creo q esta bien xq es el nombre del atributo)
+            //Servidor servidorImplicado = filaAnterior.FinAtencionRenovacionLucia.Servidor;
+            Cliente clienteImplicado = filaAnterior.FinAtencionRenovacionLucia.ClienteMatricula;
             filaNueva.ClientesRenovacionEnElSistema.Remove(clienteImplicado);
             filaNueva.Estadistica.CantidadClienteRenovacionAtendidos++;
             
@@ -496,89 +402,6 @@ namespace Simulacion_TP1.Controlador
             return filaNueva;
         }
 
-
-        private Fila generarFilaFinClienteRenovacionMaria(Fila filaAnterior)
-        {
-            Fila filaNueva = filaAnterior;
-            Cliente clienteImplicado = filaAnterior.FinAtencionRenovacionMaria.ClienteMatricula;
-            filaNueva.ClientesRenovacionEnElSistema.Remove(clienteImplicado);
-            filaNueva.Estadistica.CantidadClienteRenovacionAtendidos++;
-
-
-            if (filaAnterior.ColaRenovacion > 0)
-            {
-                Cliente cliente = buscarProximoCliente(filaAnterior);
-                cliente.Estado = "Siendo Atendido";
-                Evento finAtencionRenovacion = new Evento("finAtencionRenovacionMaria", cliente, filaAnterior.Maria1, obtenerProximoFinAtencionRenovacion() + filaAnterior.Hora);
-                filaNueva.FinAtencionRenovacionMaria = finAtencionRenovacion;
-                filaNueva.ColaRenovacion--;
-            }
-            else
-            {
-                filaNueva.Maria1.Estado = "Libre";
-                filaNueva.FinAtencionRenovacionMaria = null;
-            }
-
-
-            return filaNueva;
-        }
-
-        private Fila generarFilaFinClienteMatriculaManuel(Fila filaAnterior)
-        {
-            Fila filaNueva = filaAnterior;
-            filaNueva.EventoActual = filaAnterior.FinAtencionMatriculaManuel;
-            Cliente clienteImplicado = filaAnterior.FinAtencionMatriculaManuel.ClienteMatricula;
-            filaNueva.ClientesMatriculaEnElSistema.Remove(clienteImplicado);
-            filaNueva.Estadistica.CantidadClientesMatriculaAtendidos++;
-
-
-            if (filaAnterior.ColaMatricula > 0)
-            {
-                Cliente cliente = buscarProximoCliente(filaAnterior);
-                cliente.Estado = "Siendo Atendido";
-                Evento finAtencionMatricula = new Evento("finAtencionRenovacionManuel", cliente, filaAnterior.Manuel1, obtenerProximoFinAtencionMatricula() + filaAnterior.Hora);
-                filaNueva.FinAtencionMatriculaManuel = finAtencionMatricula;
-                filaNueva.ColaMatricula--;
-            }
-            else
-            {
-                filaNueva.Manuel1.Estado = "Libre";
-                filaNueva.FinAtencionMatriculaManuel = null;
-            }
-
-
-            return filaNueva;
-        }
-
-
-        private Fila generarFilaFinClienteRenovacionManuel(Fila filaAnterior)
-        {
-            Fila filaNueva = filaAnterior;
-            filaNueva.EventoActual = filaAnterior.FinAtencionRenovacionManuel;
-            Cliente clienteImplicado = filaAnterior.FinAtencionRenovacionManuel.ClienteMatricula;
-            filaNueva.ClientesRenovacionEnElSistema.Remove(clienteImplicado);
-            filaNueva.Estadistica.CantidadClienteRenovacionAtendidos++;
-
-
-            if (filaAnterior.ColaRenovacion > 0)
-            {
-                Cliente cliente = buscarProximoCliente(filaAnterior);
-                cliente.Estado = "Siendo Atendido";
-                Evento finAtencionRenovacion = new Evento("finAtencionRenovacionManuel", cliente, filaAnterior.Manuel1, obtenerProximoFinAtencionRenovacion() + filaAnterior.Hora);
-                filaNueva.FinAtencionRenovacionManuel = finAtencionRenovacion;
-                filaNueva.ColaRenovacion--;
-            }
-            else
-            {
-                filaNueva.Manuel1.Estado = "Libre";
-                filaNueva.FinAtencionRenovacionManuel = null;
-            }
-
-
-            return filaNueva;
-        }
-
-
         private Cliente buscarProximoCliente(Fila filaAnterior)
         {
             Cliente cliente1 = null;
@@ -594,30 +417,6 @@ namespace Simulacion_TP1.Controlador
             return cliente1;
         }
 
-        public Evento obtenerProximoEvento(Evento proximaLlegadaClienteMatricula, Evento proximaLlegadaClienteRenovacion, Evento finAtencionMatricula1, Evento finAtencionMatricula2, Evento finAtencionMatricula3,
-           Evento finAtencionRenovacion1, Evento finAtencionRenovacion2, Evento finAtencionRenovacion3, Evento descanso, Evento finDia)
-        {
-            List<Evento> proximosEventos = new List<Evento>();
-            proximosEventos.Add(proximaLlegadaClienteMatricula);
-            proximosEventos.Add(proximaLlegadaClienteRenovacion);
-            proximosEventos.Add(finAtencionMatricula1);
-            proximosEventos.Add(finAtencionMatricula2);
-            proximosEventos.Add(finAtencionMatricula3);
-            proximosEventos.Add(finAtencionRenovacion1);
-            proximosEventos.Add(finAtencionRenovacion2);
-            proximosEventos.Add(finAtencionRenovacion3);
-            proximosEventos.Add(descanso);
-            proximosEventos.Add(finDia);
-
-            if ()
-            {
-
-            }
-            return proximosEventos.Min();
-
-        }
-
-        /*
         private Fila generarFilaFinClienteMatricula(int i, Fila filaAnterior)
         {
 
@@ -838,7 +637,7 @@ namespace Simulacion_TP1.Controlador
         }
 
 
-        */
+
 
         //public Evento obtenerProximoEvento( Evento proximaLlegadaClienteMatricula, Evento proximaLlegadaClienteRenovacion, Evento finAtencionMatricula, Evento finAtencionRenovacion)
         //{
@@ -875,6 +674,31 @@ namespace Simulacion_TP1.Controlador
         //    }
         //    return proximoEvento;
         //}
+        public Evento obtenerProximoEvento(Evento proximaLlegadaClienteMatricula, Evento proximaLlegadaClienteRenovacion, Evento finAtencionMatricula1, Evento finAtencionMatricula2, Evento finAtencionMatricula3, Evento finAtencionRenovacion1, Evento finAtencionRenovacion2, Evento finAtencionRenovacion3, Evento descanso, Evento finDia,)
+        {
+            List<Evento> proximosEventos = new List<Evento>();
+            proximosEventos.Add(proximaLlegadaClienteMatricula);
+            proximosEventos.Add(proximaLlegadaClienteRenovacion);
+            proximosEventos.Add(finAtencionMatricula1);
+            proximosEventos.Add(finAtencionMatricula2);
+            proximosEventos.Add(finAtencionMatricula3);
+            proximosEventos.Add(finAtencionRenovacion1);
+            proximosEventos.Add(finAtencionRenovacion2);
+            proximosEventos.Add(finAtencionRenovacion3);
+            proximosEventos.Add(descanso);
+            proximosEventos.Add(finDia);
+            return proximosEventos.Min();
+
+        }
+
+
+
+        public void agregarFila(double cantidad, double probabilidad, List<RenglonDistribucion> tablaProbabilidad)
+        {
+            RenglonDistribucion renglon = new RenglonDistribucion(cantidad, probabilidad);
+            tablaProbabilidad.Add(renglon);
+        }
+
 
     }
 }

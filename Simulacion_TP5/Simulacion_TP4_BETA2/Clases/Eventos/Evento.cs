@@ -12,7 +12,7 @@ namespace Simulacion_TP1.Clases
         Cliente clienteMatricula;
         Servidor servidor;
         double tiempo;
-        double duracion;
+
 
         public Evento()
         {
@@ -28,26 +28,16 @@ namespace Simulacion_TP1.Clases
             this.tiempo = tiempo;
         }
 
-        public Evento(string nombre, Servidor servidor, double tiempo, double duracion)
-        {
-            this.nombre = nombre;
-            this.servidor = servidor;
-            this.tiempo = tiempo;
-            this.duracion = duracion;
-        }
-
         public Evento(string nombre, double tiempo)
         {
             this.nombre = nombre;
             this.tiempo = tiempo;
         }
 
-
         public double Tiempo { get => tiempo; set => tiempo = value; }
         public Cliente ClienteMatricula { get => clienteMatricula; set => clienteMatricula = value; }
         public Servidor Servidor { get => servidor; set => servidor = value; }
         public string Nombre { get => nombre; set => nombre = value; }
-        public double Duracion { get => duracion; set => duracion = value; }
 
         public int CompareTo(Evento other)
         {
