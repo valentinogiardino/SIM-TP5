@@ -8,32 +8,92 @@ namespace Simulacion_TP1.Clases
 {
     public class Fila
     {
-        double hora;
-		Evento eventoActual;
-		Evento proximaLlegadaClienteMatricula;
-		Evento ProximaLlegadaClienteRenovacion;
-		Evento finAtencionMatricula;
-		Evento finAtencionRenovacion;
-		ServidorMatricula Tomas;
-		ServidorMatricula Alicia;
-		ServidorRenovacion Lucia;
-		ServidorRenovacion Maria;
-		ServidorEspecial Manuel;
-		int colaMatricula;
-		int colaRenovacion;
-		int cantidadClientesMatriculaAtendidos;
-		int cantidadClienteRenovacionAtendidos;
-		List<ClienteMatricula> clientesMatriculaEnElSistema;
-        List<ClienteLicencia> clientesLicenciaEnElSistema;
+        private double hora;
+        private Evento eventoActual;
 
-        public Fila(double hora, Evento eventoActual, Evento proximaLlegadaClienteMatricula, Evento proximaLlegadaClienteRenovacion, Evento finAtencionMatricula, Evento finAtencionRenovacion, ServidorMatricula tomas, ServidorMatricula alicia, ServidorRenovacion lucia, ServidorRenovacion maria, ServidorEspecial manuel, int colaMatricula, int colaRenovacion, int cantidadClientesMatriculaAtendidos, int cantidadClienteRenovacionAtendidos, List<ClienteMatricula> clientesMatriculaEnElSistema, List<ClienteLicencia> clientesLicenciaEnElSistema)
+        private Evento proximaLlegadaClienteMatricula;
+        private Evento ProximaLlegadaClienteRenovacion;
+
+        private Evento finAtencionMatriculaTomas;
+        private Evento finAtencionMatriculaAlicia;
+        private Evento finAtencionMatriculaManuel;
+
+        private Evento finAtencionRenovacionLucia;
+        private Evento finAtencionRenovacionMaria;
+        private Evento finAtencionRenovacionManuel;
+
+
+        private Evento descanso;
+        private Evento finDelDia;
+
+
+        private Servidor Tomas;
+        private Servidor Alicia;
+
+        private Servidor Lucia;
+        private Servidor Maria;
+
+        private Servidor Manuel;
+
+
+        private int colaMatricula;
+        private int colaRenovacion;
+
+        private Estadistica estadistica;
+
+
+        private List<Cliente> clientesMatriculaEnElSistema;
+        private List<Cliente> clientesRenovacionEnElSistema;
+
+
+
+        public Fila()
+        {
+
+        }
+
+        public Fila(Fila filaAnterior)
+        {
+            Fila filaNueva = new Fila();
+            filaNueva.Hora = filaAnterior.Hora;
+            filaNueva.EventoActual = filaAnterior.EventoActual;
+            filaNueva.ProximaLlegadaClienteMatricula = filaAnterior.ProximaLlegadaClienteMatricula;
+            filaNueva.ProximaLlegadaClienteRenovacion1 = filaAnterior.ProximaLlegadaClienteRenovacion1;
+            filaNueva.FinAtencionMatriculaTomas = filaAnterior.FinAtencionMatriculaTomas;
+            filaNueva.FinAtencionMatriculaAlicia = filaAnterior.FinAtencionMatriculaAlicia;
+            filaNueva.FinAtencionMatriculaManuel = filaAnterior.FinAtencionMatriculaManuel;
+            filaNueva.FinAtencionRenovacionLucia = filaAnterior.FinAtencionRenovacionLucia;
+            filaNueva.FinAtencionRenovacionMaria = filaAnterior.FinAtencionRenovacionMaria;
+            filaNueva.FinAtencionRenovacionManuel = filaAnterior.FinAtencionRenovacionManuel;
+            filaNueva.Descanso = filaAnterior.Descanso;
+            filaNueva.FinDelDia = filaAnterior.FinDelDia;
+            filaNueva.Tomas1 = filaAnterior.Tomas1;
+            filaNueva.Alicia1 = filaAnterior.Alicia1;
+            filaNueva.Lucia1 = filaAnterior.Lucia1;
+            filaNueva.Maria1 = filaAnterior.Maria1;
+            filaNueva.Manuel1 = filaAnterior.Manuel1;
+            filaNueva.ColaMatricula = filaAnterior.ColaMatricula;
+            filaNueva.ColaRenovacion = filaAnterior.ColaRenovacion;
+            filaNueva.Estadistica = filaAnterior.Estadistica;
+            filaNueva.ClientesMatriculaEnElSistema = filaAnterior.ClientesMatriculaEnElSistema;
+            filaNueva.ClientesRenovacionEnElSistema = filaAnterior.ClientesRenovacionEnElSistema;
+
+        }
+
+        public Fila(double hora, Evento eventoActual, Evento proximaLlegadaClienteMatricula, Evento proximaLlegadaClienteRenovacion, Evento finAtencionMatriculaTomas, Evento finAtencionMatriculaAlicia, Evento finAtencionMatriculaManuel, Evento finAtencionRenovacionLucia, Evento finAtencionRenovacionMaria, Evento finAtencionRenovacionManuel, Evento descanso, Evento finDelDia, Servidor tomas, Servidor alicia, Servidor lucia, Servidor maria, Servidor manuel, int colaMatricula, int colaRenovacion, Estadistica estadistica, List<Cliente> clientesMatriculaEnElSistema, List<Cliente> clientesRenovacionEnElSistema)
         {
             this.Hora = hora;
             this.EventoActual = eventoActual;
             this.ProximaLlegadaClienteMatricula = proximaLlegadaClienteMatricula;
             ProximaLlegadaClienteRenovacion1 = proximaLlegadaClienteRenovacion;
-            this.FinAtencionMatricula = finAtencionMatricula;
-            this.FinAtencionRenovacion = finAtencionRenovacion;
+            this.FinAtencionMatriculaTomas = finAtencionMatriculaTomas;
+            this.FinAtencionMatriculaAlicia = finAtencionMatriculaAlicia;
+            this.FinAtencionMatriculaManuel = finAtencionMatriculaManuel;
+            this.FinAtencionRenovacionLucia = finAtencionRenovacionLucia;
+            this.FinAtencionRenovacionMaria = finAtencionRenovacionMaria;
+            this.FinAtencionRenovacionManuel = finAtencionRenovacionManuel;
+            this.Descanso = descanso;
+            this.FinDelDia = finDelDia;
             Tomas1 = tomas;
             Alicia1 = alicia;
             Lucia1 = lucia;
@@ -41,33 +101,32 @@ namespace Simulacion_TP1.Clases
             Manuel1 = manuel;
             this.ColaMatricula = colaMatricula;
             this.ColaRenovacion = colaRenovacion;
-            this.CantidadClientesMatriculaAtendidos = cantidadClientesMatriculaAtendidos;
-            this.CantidadClienteRenovacionAtendidos = cantidadClienteRenovacionAtendidos;
+            this.Estadistica = estadistica;
             this.ClientesMatriculaEnElSistema = clientesMatriculaEnElSistema;
-            this.ClientesLicenciaEnElSistema = clientesLicenciaEnElSistema;
+            this.ClientesRenovacionEnElSistema = clientesRenovacionEnElSistema;
         }
 
-        public Fila()
-        {
-
-        }
-
+        public double Hora { get => hora; set => hora = value; }
         public Evento EventoActual { get => eventoActual; set => eventoActual = value; }
         public Evento ProximaLlegadaClienteMatricula { get => proximaLlegadaClienteMatricula; set => proximaLlegadaClienteMatricula = value; }
         public Evento ProximaLlegadaClienteRenovacion1 { get => ProximaLlegadaClienteRenovacion; set => ProximaLlegadaClienteRenovacion = value; }
-        public Evento FinAtencionMatricula { get => finAtencionMatricula; set => finAtencionMatricula = value; }
-        public Evento FinAtencionRenovacion { get => finAtencionRenovacion; set => finAtencionRenovacion = value; }
-        public ServidorMatricula Tomas1 { get => Tomas; set => Tomas = value; }
-        public ServidorMatricula Alicia1 { get => Alicia; set => Alicia = value; }
-        public ServidorRenovacion Lucia1 { get => Lucia; set => Lucia = value; }
-        public ServidorRenovacion Maria1 { get => Maria; set => Maria = value; }
-        public ServidorEspecial Manuel1 { get => Manuel; set => Manuel = value; }
+        public Evento FinAtencionMatriculaTomas { get => finAtencionMatriculaTomas; set => finAtencionMatriculaTomas = value; }
+        public Evento FinAtencionMatriculaAlicia { get => finAtencionMatriculaAlicia; set => finAtencionMatriculaAlicia = value; }
+        public Evento FinAtencionMatriculaManuel { get => finAtencionMatriculaManuel; set => finAtencionMatriculaManuel = value; }
+        public Evento FinAtencionRenovacionLucia { get => finAtencionRenovacionLucia; set => finAtencionRenovacionLucia = value; }
+        public Evento FinAtencionRenovacionMaria { get => finAtencionRenovacionMaria; set => finAtencionRenovacionMaria = value; }
+        public Evento FinAtencionRenovacionManuel { get => finAtencionRenovacionManuel; set => finAtencionRenovacionManuel = value; }
+        public Evento Descanso { get => descanso; set => descanso = value; }
+        public Evento FinDelDia { get => finDelDia; set => finDelDia = value; }
+        public Servidor Tomas1 { get => Tomas; set => Tomas = value; }
+        public Servidor Alicia1 { get => Alicia; set => Alicia = value; }
+        public Servidor Lucia1 { get => Lucia; set => Lucia = value; }
+        public Servidor Maria1 { get => Maria; set => Maria = value; }
+        public Servidor Manuel1 { get => Manuel; set => Manuel = value; }
         public int ColaMatricula { get => colaMatricula; set => colaMatricula = value; }
         public int ColaRenovacion { get => colaRenovacion; set => colaRenovacion = value; }
-        public int CantidadClientesMatriculaAtendidos { get => cantidadClientesMatriculaAtendidos; set => cantidadClientesMatriculaAtendidos = value; }
-        public int CantidadClienteRenovacionAtendidos { get => cantidadClienteRenovacionAtendidos; set => cantidadClienteRenovacionAtendidos = value; }
-        public List<ClienteMatricula> ClientesMatriculaEnElSistema { get => clientesMatriculaEnElSistema; set => clientesMatriculaEnElSistema = value; }
-        public List<ClienteLicencia> ClientesLicenciaEnElSistema { get => clientesLicenciaEnElSistema; set => clientesLicenciaEnElSistema = value; }
-        public double Hora { get => hora; set => hora = value; }
+        public Estadistica Estadistica { get => estadistica; set => estadistica = value; }
+        public List<Cliente> ClientesMatriculaEnElSistema { get => clientesMatriculaEnElSistema; set => clientesMatriculaEnElSistema = value; }
+        public List<Cliente> ClientesRenovacionEnElSistema { get => clientesRenovacionEnElSistema; set => clientesRenovacionEnElSistema = value; }
     }
 }

@@ -1,0 +1,209 @@
+Clases:
+	*Servidores:
+		-SerivorMatricula
+		-ServidorRenovacion
+		-ServidorEspecial
+	*Clientes:
+		-ClienteMatricula
+		-ClienteRenovacion
+		
+	*Eventos:
+		-llegadaClienteRenovacion
+		-llegadaClienteMatricula
+		-finAtencionMatricula(ClienteMatricula cliente, Servidor servidor)
+		-finAtencionRenovacion(ClienteRenovacion cliente, Servidor servidor)
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+//**AL INICIAR PROGRAMA**/
+
+Crear dos instancias de servidor matricula.
+Crear dos instancias de servidor renovacion.
+Crear una instancia de servidor especial.
+
+Crear dos instancias de generador de poisson.
+Crear una instancia de generador normal.
+Crear una instancia de generador uniforme.
+
+Generar primera llegada para cada tipo de cliente.
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+**Buscar el evento mas proximo:
+
+	Escenarios:
+			
+		*LLegada cliente Renovacion:
+			-Generar proxima llegada(generar nuevo rnd con el objeto generadorPoissonRenovacion)
+			-Preguntar por los servidores:
+				*Si servidorRenovacion1(Lucia) esta libre:
+					-cambiar estado del servidor a ocupado
+					-new clienteRenovacion(SiendoAtendido, horaIngreso) 
+					-Generar evento finAtencionRenovacion(cliente, servidorRenovacion1)
+				*Sino, si servidorRenovacion2(Maria) esta libre:
+					-cambiar estado del servidor a ocupado
+					-new clienteRenovacion(SiendoAtendido, horaIngreso) 
+					-Generar evento finAtencionRenovacion(cliente, servidorRenovacion2)
+				*Sino, si servidorEspecial(Manuel) esta libre:
+					-cambiar estado del servidor a ocupado
+					-Generar evento finAtencionRenovacion(cliente, servidorEspecial)
+					-Generar evento fin atencion(cliente, servidor)
+				*Sino (TODOS LOS SERVIDORES OCUPADOS):
+					-new clienteRenovacion(EsperandoAtencion, horaIngreso)
+					-Incrementar colaRenovaciones
+					
+					
+		*LLegada cliente Matriula:
+			-Generar proxima llegada(generar nuevo rnd con el objeto generadorPoissonMatricula)
+			-Preguntar por los servidores:
+				*Si servidorMatricula1(Tomas) esta libre:
+					-cambiar estado del servidor a ocupado
+					-new clienteMatricula(SiendoAtendido, horaIngreso) 
+					-Generar evento finAtencionMatricula(cliente, servidorMatricula1)
+				*Sino, si servidorMatricula2(Alicia) esta libre:
+					-cambiar estado del servidor a ocupado
+					-new clienteMatricula(SiendoAtendido, horaIngreso) 
+					-Generar evento fin atencion
+				*Sino, si servidorEspecial(Manuel) esta libre:
+					-cambiar estado del servidor a ocupado
+					-new clienteMatricula(SiendoAtendido, horaIngreso) 
+					-Generar evento finAtencionMatricula(cliente, servidorMatricula2)
+				*Sino (TODOS LOS SERVIDORES OCUPADOS):
+					-new clienteMatricula(EsperandoAtencion, horaIngreso)
+					-Incrementar colaMatricula
+		
+		
+		*Fin atencion cliente renovacion:
+			*Obtener cliente y servidor implicador:
+				-finAtencionRenovacion.get(cliente)
+				-finAtencionRenovacion.get(servidor)
+			*Destruir cliente, null
+			*ClientesRenovacionAtendidos++;
+			*
+			
+			
+			*Si el servidor es Manuel, pregunta por las dos colas:
+				-Si las dos son mayores a cero:
+					-Buscar Cliente(DE LOS DOS TIPOS)con estado EsperandoAtencion y menor horaIngreso
+					-mantener estado del servidor en ocupado
+					-cambiar el estado del cliente a SiendoAtendido 
+					-Generar evento finAtencionRenovacion/Matricula(cliente, servidorRenovacion1)
+				-Si la colaRenovacion es mayor a cero:
+					-Buscar clienteRenovacion con estado EsperandoAtencion y menor horaIngreso
+					-mantener estado del servidor en ocupado
+					-cambiar el estado del cliente a SiendoAtendido 
+					-Generar evento finAtencionRenovacion(cliente, servidorRenovacion1)
+				-Si la colaMatricula es mayor a cero:
+					-Buscar clienteMatricula con estado EsperandoAtencion y menor horaIngreso
+					-mantener estado del servidor en ocupado
+					-cambiar el estado del cliente a SiendoAtendido 
+					-Generar evento finAtencionMatricula(cliente, servidorRenovacion1)
+				-Sino (colaMatricula y clienteRenovacion VACIAS):
+					-cambiar estado del servidor a Libre
+					
+			*Sino es Manuel: 		
+				*El servidor pregunta por la colaRenovacion:
+					*Si es mayor a cero:
+						-Buscar clienteRenovacion con estado EsperandoAtencion y menor horaIngreso
+						-mantener estado del servidor en ocupado
+						-cambiar el estado del cliente a SiendoAtendido 
+						-Generar evento finAtencionRenovacion(cliente, servidorRenovacion1)
+					*Sino (colaRenovacion VACIA):
+						-cambiar estado del servidor a Libre
+						-setear null en el eventofinRenovacionServidorX
+			*Incrementar cantidadClienteRenovacionAtendidos
+			
+			
+		*Fin atencion cliente matricula:
+			*Obtener cliente y servidor implicador:
+				-finAtencionMatricula.get(cliente)
+				-finAtencionMatricula.get(servidor)
+			*Destruir cliente
+			*Si el servidor es Manuel, pregunta por las dos colas:
+				-Si las dos son mayores a cero:
+					-Buscar Cliente(DE LOS DOS TIPOS)con estado EsperandoAtencion y menor horaIngreso
+					-mantener estado del servidor en ocupado
+					-cambiar el estado del cliente a SiendoAtendido 
+					-Generar evento finAtencionRenovacion/Matricula(cliente, servidorRenovacion1)
+				-Si la colaRenovacion es mayor a cero:
+					-Buscar clienteRenovacion con estado EsperandoAtencion y menor horaIngreso
+					-mantener estado del servidor en ocupado
+					-cambiar el estado del cliente a SiendoAtendido 
+					-Generar evento finAtencionRenovacion(cliente, servidorRenovacion1)
+				-Si la colaMatricula es mayor a cero:
+					-Buscar clienteMatricula con estado EsperandoAtencion y menor horaIngreso
+					-mantener estado del servidor en ocupado
+					-cambiar el estado del cliente a SiendoAtendido 
+					-Generar evento finAtencionMatricula(cliente, servidorRenovacion1)
+				-Sino (colaMatricula y clienteRenovacion VACIAS):
+					-cambiar estado del servidor a Libre
+	
+			*Sino es Manuel: 
+				*El servidor pregunta por la colaMatricula:
+					*Si es mayor a cero:
+						-Buscar clienteMatricula con estado EsperandoAtencion y menor horaIngreso
+						-mantener estado del servidor en ocupado
+						-cambiar el estado del cliente a SiendoAtendido 
+						-Generar evento finAtencionMatricula(cliente, servidorRenovacion1)
+					*Sino (colaMatricula VACIA):
+						-cambiar estado del servidor a Libre
+			*Incrementar cantidadClientesMatriculaAtendidos
+			
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+public class FilaDeSimulacion
+	Evento eventoActual
+	Evento proximaLlegadaClienteMatricula
+	Evento ProximaLlegadaClienteRenovacion
+	Evento finAtencionMatricula
+	Evento finAtencionRenovacion
+	servidorMatricula1 Tomas
+	servidorMatricula2 Alicia
+	servidorRenovacion1 Lucia
+	servidorRenovacion2 Maria
+	servidorEspecial Manuel
+	Integer colaMatricula
+	Integer colaRenovacion
+	Integer cantidadClientesMatriculaAtendidos
+	Integer cantidadClienteRenovacionAtendidos
+	List<Cliente> clientesEnElSistema
+	
+	
+	
+
+pueden haber null en eventos cuando:
+	-Ante un fin, el servidor que estaba atendiendo se libera
+	-Cuando llega el ultimo descanso
+	
+EVENTOS:
+proximaLLegadaClienteMatricula
+proximaLlegadaClienteRenovacion
+
+finAtencionMatriculaTomas
+finAtencionMatriculaAlicia
+finAtencionMatriculaManuel
+
+finAtencionRenovacionLucia
+finAtencionRenovacionMaria
+finAtencionRenovacionManuel
+
+descanso
+finDelDia
+
+
+
+CLIENTS:
+matricula
+renovacion
+
+ESTADOS CLIENTES:
+Esperando Atencion
+Siendo Atendido
+
+
+SERVIDORES ESTADOS:
+Ocupado
+Libre
+Descansando
