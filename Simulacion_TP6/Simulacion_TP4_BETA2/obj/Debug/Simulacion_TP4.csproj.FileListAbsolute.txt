@@ -149,3 +149,12 @@ C:\UTN\4° Año\SIM\Simulacion_TP5\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP4
 C:\UTN\4° Año\SIM\Simulacion_TP5\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP4.csproj.CopyComplete
 C:\UTN\4° Año\SIM\Simulacion_TP5\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP1.exe
 C:\UTN\4° Año\SIM\Simulacion_TP5\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP1.pdb
+C:\UTN\4° Año\SIM\Simulacion_TP6\Simulacion_TP6\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP4.csproj.AssemblyReference.cache
+C:\UTN\4° Año\SIM\Simulacion_TP6\Simulacion_TP6\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP1.Pantalla.resources
+C:\UTN\4° Año\SIM\Simulacion_TP6\Simulacion_TP6\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP1.Properties.Resources.resources
+C:\UTN\4° Año\SIM\Simulacion_TP6\Simulacion_TP6\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP4.csproj.GenerateResource.cache
+C:\UTN\4° Año\SIM\Simulacion_TP6\Simulacion_TP6\Simulacion_TP4_BETA2\obj\Debug\RdlCompile.cache
+C:\UTN\4° Año\SIM\Simulacion_TP6\Simulacion_TP6\Simulacion_TP4_BETA2\obj\Debug\RdlCompile.compiled
+C:\UTN\4° Año\SIM\Simulacion_TP6\Simulacion_TP6\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP4.csproj.CoreCompileInputs.cache
+C:\UTN\4° Año\SIM\Simulacion_TP6\Simulacion_TP6\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP1.exe
+C:\UTN\4° Año\SIM\Simulacion_TP6\Simulacion_TP6\Simulacion_TP4_BETA2\obj\Debug\Simulacion_TP1.pdb
