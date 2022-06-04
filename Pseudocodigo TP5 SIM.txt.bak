@@ -150,29 +150,6 @@ Generar primera llegada para cada tipo de cliente.
 						-cambiar estado del servidor a Libre
 			*Incrementar cantidadClientesMatriculaAtendidos
 			
-			
-			
-		*Descanso:
-            *Obtener servidor descanso anterior
-            *Si el servidor esta ocupado:
-                -Generar evento Descanso("descanso", filaAnterior.descanso.servidor, filaAnterior.finAtencionServidor.hora, filaAnterior.descanso.duracion) =====> (Es solamente modificar el comienzo del descanso)
-                -cambiar la bandera del servidor (servidor.descansoPendiente = true)
-
-            *Si el servidor esta libre:
-                -Generar evento Descanso("descanso", servidorSiguiente, horaSiguiente(filaAnterior.hora + filaAnterior.descanso.duracion)
-                -cambiar el estado del servidor a "En Descanso"
-                -cambiar la bandera del servidor (servidor.descansoPendiente = false)
-				
-		*FinDelDia:
-            *Borro las colas de clientes
-            *Si todos los servidores estan en estado "Libre":
-                -Generar evento FinDelDia(hora + 480)
-
-            *Si hay algun servidor ocupado:
-                -Obtener el mayor fin de un evento de atencion
-                -Eliminar eventos de llegada menores a al mayor evento de atencion
-                -Generar evento FinDelDia(filaAnterior.maxEventoAtencion)
-			
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -201,7 +178,7 @@ pueden haber null en eventos cuando:
 	-Cuando llega el ultimo descanso
 	
 EVENTOS:
-proximaLlegadaClienteMatricula
+proximaLLegadaClienteMatricula
 proximaLlegadaClienteRenovacion
 
 finAtencionMatriculaTomas
@@ -230,6 +207,3 @@ SERVIDORES ESTADOS:
 Ocupado
 Libre
 Descansando
-
-
-3,7,8,2,3,9

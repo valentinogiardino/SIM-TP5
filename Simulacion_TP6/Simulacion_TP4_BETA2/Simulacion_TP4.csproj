@@ -83,6 +83,7 @@
     <Compile Include="Clases\Estadistica.cs" />
     <Compile Include="Clases\Clientes\Cliente.cs" />
     <Compile Include="Clases\Eventos\Evento.cs" />
+    <Compile Include="Clases\FilaMuestra.cs" />
     <Compile Include="Clases\RenglonDistribucion.cs" />
     <Compile Include="Clases\Fila.cs" />
     <Compile Include="Clases\Servidores\Servidor.cs" />

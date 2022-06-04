@@ -47,9 +47,31 @@ namespace Simulacion_TP1
 
         public void cargarTabla()
         {
-            List<Fila> fila = gestor.generarTablaSimulacion();    //Se le delega al gestor la generacion de la tabla
+            List<FilaMuestra> fila = gestor.generarTablaSimulacion();    //Se le delega al gestor la generacion de la tabla
             dataGridView1.DataSource = fila;
+            dataGridView1.Refresh();
+          
+            
 
+            List<Cliente> listaClientes = new List<Cliente>();
+            listaClientes = gestor.ListaClientes;
+            //List<FilaMuestra> fila2 = listaClientes;    //Se le delega al gestor la generacion de la tabla
+            dataGridView2.DataSource = listaClientes;
+            dataGridView2.Columns.Add("Cantidad", "Cantidad");
+            //dataGridView2.Columns.Add("10");
+            dataGridView2.Refresh();
+            //foreach (Cliente cliente in listaClientes)
+            //{
+            //    dataGridView2.Rows.Add(cliente.Estado);
+            //}
+
+           
+            dataGridView1.Refresh();
+        }
+
+        public void AgregarClientesTabla()
+        {
+            
             dataGridView1.Refresh();
         }
 

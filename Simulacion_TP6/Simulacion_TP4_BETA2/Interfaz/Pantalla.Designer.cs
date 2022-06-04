@@ -35,7 +35,9 @@ namespace Simulacion_TP1
             this.label1 = new System.Windows.Forms.Label();
             this.txtCantidadHoras = new System.Windows.Forms.MaskedTextBox();
             this.label2 = new System.Windows.Forms.Label();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -43,7 +45,7 @@ namespace Simulacion_TP1
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(21, 423);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 128);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -94,11 +96,24 @@ namespace Simulacion_TP1
             this.label2.TabIndex = 28;
             this.label2.Text = "Cantidad de horas:";
             // 
+            // dataGridView2
+            // 
+            this.dataGridView2.AllowUserToAddRows = false;
+            this.dataGridView2.AllowUserToDeleteRows = false;
+            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView2.Location = new System.Drawing.Point(3, 451);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.ReadOnly = true;
+            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView2.Size = new System.Drawing.Size(1438, 308);
+            this.dataGridView2.TabIndex = 30;
+            // 
             // Pantalla
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1471, 766);
+            this.ClientSize = new System.Drawing.Size(1471, 784);
+            this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.txtHoraDesde);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.txtCantidadHoras);
@@ -110,6 +125,7 @@ namespace Simulacion_TP1
             this.Text = "Generador Números Pseudoaleatorios";
             this.Load += new System.EventHandler(this.Pantalla_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -122,6 +138,7 @@ namespace Simulacion_TP1
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.MaskedTextBox txtCantidadHoras;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataGridView dataGridView2;
     }
 }
 

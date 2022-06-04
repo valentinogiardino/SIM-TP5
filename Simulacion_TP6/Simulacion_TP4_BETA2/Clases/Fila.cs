@@ -52,32 +52,31 @@ namespace Simulacion_TP1.Clases
 
         }
 
-        public Fila(Fila filaAnterior)
+        public Fila clonar(Fila filaAnterior)
         {
-            Fila filaNueva = new Fila();
-            filaNueva.Hora = filaAnterior.Hora;
-            filaNueva.EventoActual = filaAnterior.EventoActual;
-            filaNueva.ProximaLlegadaClienteMatricula = filaAnterior.ProximaLlegadaClienteMatricula;
-            filaNueva.ProximaLlegadaClienteRenovacion1 = filaAnterior.ProximaLlegadaClienteRenovacion1;
-            filaNueva.FinAtencionMatriculaTomas = filaAnterior.FinAtencionMatriculaTomas;
-            filaNueva.FinAtencionMatriculaAlicia = filaAnterior.FinAtencionMatriculaAlicia;
-            filaNueva.FinAtencionMatriculaManuel = filaAnterior.FinAtencionMatriculaManuel;
-            filaNueva.FinAtencionRenovacionLucia = filaAnterior.FinAtencionRenovacionLucia;
-            filaNueva.FinAtencionRenovacionMaria = filaAnterior.FinAtencionRenovacionMaria;
-            filaNueva.FinAtencionRenovacionManuel = filaAnterior.FinAtencionRenovacionManuel;
-            filaNueva.Descanso = filaAnterior.Descanso;
-            filaNueva.FinDelDia = filaAnterior.FinDelDia;
-            filaNueva.Tomas1 = filaAnterior.Tomas1;
-            filaNueva.Alicia1 = filaAnterior.Alicia1;
-            filaNueva.Lucia1 = filaAnterior.Lucia1;
-            filaNueva.Maria1 = filaAnterior.Maria1;
-            filaNueva.Manuel1 = filaAnterior.Manuel1;
-            filaNueva.ColaMatricula = filaAnterior.ColaMatricula;
-            filaNueva.ColaRenovacion = filaAnterior.ColaRenovacion;
-            filaNueva.Estadistica = filaAnterior.Estadistica;
-            filaNueva.ClientesMatriculaEnElSistema = filaAnterior.ClientesMatriculaEnElSistema;
-            filaNueva.ClientesRenovacionEnElSistema = filaAnterior.ClientesRenovacionEnElSistema;
-
+            this.Hora = filaAnterior.Hora;
+            this.EventoActual = filaAnterior.EventoActual;
+            this.ProximaLlegadaClienteMatricula = filaAnterior.ProximaLlegadaClienteMatricula;
+            this.ProximaLlegadaClienteRenovacion1 = filaAnterior.ProximaLlegadaClienteRenovacion1;
+            this.FinAtencionMatriculaTomas = filaAnterior.FinAtencionMatriculaTomas;
+            this.FinAtencionMatriculaAlicia = filaAnterior.FinAtencionMatriculaAlicia;
+            this.FinAtencionMatriculaManuel = filaAnterior.FinAtencionMatriculaManuel;
+            this.FinAtencionRenovacionLucia = filaAnterior.FinAtencionRenovacionLucia;
+            this.FinAtencionRenovacionMaria = filaAnterior.FinAtencionRenovacionMaria;
+            this.FinAtencionRenovacionManuel = filaAnterior.FinAtencionRenovacionManuel;
+            this.Descanso = filaAnterior.Descanso;
+            this.FinDelDia = filaAnterior.FinDelDia;
+            this.Tomas1 = filaAnterior.Tomas1;
+            this.Alicia1 = filaAnterior.Alicia1;
+            this.Lucia1 = filaAnterior.Lucia1;
+            this.Maria1 = filaAnterior.Maria1;
+            this.Manuel1 = filaAnterior.Manuel1;
+            this.ColaMatricula = filaAnterior.ColaMatricula;
+            this.ColaRenovacion = filaAnterior.ColaRenovacion;
+            this.Estadistica = filaAnterior.Estadistica;
+            this.ClientesMatriculaEnElSistema = filaAnterior.ClientesMatriculaEnElSistema;
+            this.ClientesRenovacionEnElSistema = filaAnterior.ClientesRenovacionEnElSistema;
+            return this;
         }
 
         public Fila(double hora, Evento eventoActual, Evento proximaLlegadaClienteMatricula, Evento proximaLlegadaClienteRenovacion, Evento finAtencionMatriculaTomas, Evento finAtencionMatriculaAlicia, Evento finAtencionMatriculaManuel, Evento finAtencionRenovacionLucia, Evento finAtencionRenovacionMaria, Evento finAtencionRenovacionManuel, Evento descanso, Evento finDelDia, Servidor tomas, Servidor alicia, Servidor lucia, Servidor maria, Servidor manuel, int colaMatricula, int colaRenovacion, Estadistica estadistica, List<Cliente> clientesMatriculaEnElSistema, List<Cliente> clientesRenovacionEnElSistema)

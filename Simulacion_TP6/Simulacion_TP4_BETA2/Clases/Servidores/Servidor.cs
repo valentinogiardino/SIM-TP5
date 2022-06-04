@@ -11,6 +11,7 @@ namespace Simulacion_TP1.Clases
         private string nombre;
         private string estado;
         private int contadorAtendidos;
+        private bool descansoPendiente;
 
         public Servidor(string estado, int contadorAtendidos)
         {
@@ -28,5 +29,6 @@ namespace Simulacion_TP1.Clases
         public string Estado { get => estado; set => estado = value; }
         public int ContadorAtendidos { get => contadorAtendidos; set => contadorAtendidos = value; }
         public string Nombre { get => nombre; set => nombre = value; }
+        public bool DescansoPendiente { get => descansoPendiente; set => descansoPendiente = value; }
     }
 }
