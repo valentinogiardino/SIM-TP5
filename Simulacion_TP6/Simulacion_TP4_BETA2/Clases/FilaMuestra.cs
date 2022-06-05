@@ -12,8 +12,8 @@ namespace Simulacion_TP1.Clases
         private double hora;
         private string eventoActual;
 
-        private double proximaLlegadaClienteMatricula;
-        private double ProximaLlegadaClienteRenovacion;
+        private string proximaLlegadaClienteMatricula;
+        private string ProximaLlegadaClienteRenovacion;
 
         private string finAtencionMatriculaTomas;
         private string finAtencionMatriculaAlicia;
@@ -60,8 +60,23 @@ namespace Simulacion_TP1.Clases
         {
             this.Hora = filaAMostrar.Hora;
             this.EventoActual =filaAMostrar.EventoActual.Nombre.ToString();
-            this.ProximaLlegadaClienteMatricula =filaAMostrar.ProximaLlegadaClienteMatricula.Tiempo;
-            this.ProximaLlegadaClienteRenovacion1 =filaAMostrar.ProximaLlegadaClienteRenovacion1.Tiempo;
+            if (filaAMostrar.ProximaLlegadaClienteMatricula == null)
+            {
+                this.ProximaLlegadaClienteMatricula = null;
+            }
+            else
+            {
+                this.ProximaLlegadaClienteMatricula = filaAMostrar.ProximaLlegadaClienteMatricula.Tiempo.ToString();
+            }
+            if (filaAMostrar.ProximaLlegadaClienteRenovacion1 == null)
+            {
+                this.ProximaLlegadaClienteRenovacion1 = null;
+            }
+            else
+            {
+                this.ProximaLlegadaClienteRenovacion1 = filaAMostrar.ProximaLlegadaClienteRenovacion1.Tiempo.ToString();
+            }
+
             if (filaAMostrar.FinAtencionMatriculaTomas == null)
             {
                 this.FinAtencionMatriculaTomas = null;
@@ -151,7 +166,7 @@ namespace Simulacion_TP1.Clases
             
         }
 
-        public FilaMuestra(double hora, string eventoActual, double proximaLlegadaClienteMatricula, double proximaLlegadaClienteRenovacion, string finAtencionMatriculaTomas, string finAtencionMatriculaAlicia, string finAtencionMatriculaManuel, string finAtencionRenovacionLucia, string finAtencionRenovacionMaria, string finAtencionRenovacionManuel, string descanso, string finDelDia, string tomas, string alicia, string lucia, string maria, string manuel, int colaMatricula, int colaRenovacion, int cantidadClientesMatriculaAtendidos, int cantidadClienteRenovacionAtendidos, int cantidadClientesMatriculaNoAtendidos, int cantidadClienteRenovacionNoAtendidos, int contadorDirectoAColaMatricula, int contadorDirectoAColaRenovacion, string tipo, string estado, double horaIngreso)
+        public FilaMuestra(double hora, string eventoActual, string proximaLlegadaClienteMatricula, string proximaLlegadaClienteRenovacion, string finAtencionMatriculaTomas, string finAtencionMatriculaAlicia, string finAtencionMatriculaManuel, string finAtencionRenovacionLucia, string finAtencionRenovacionMaria, string finAtencionRenovacionManuel, string descanso, string finDelDia, string tomas, string alicia, string lucia, string maria, string manuel, int colaMatricula, int colaRenovacion, int cantidadClientesMatriculaAtendidos, int cantidadClienteRenovacionAtendidos, int cantidadClientesMatriculaNoAtendidos, int cantidadClienteRenovacionNoAtendidos, int contadorDirectoAColaMatricula, int contadorDirectoAColaRenovacion, string tipo, string estado, double horaIngreso)
         {
             this.hora = hora;
             this.eventoActual = eventoActual;
@@ -185,8 +200,8 @@ namespace Simulacion_TP1.Clases
 
         public double Hora { get => hora; set => hora = value; }
         public string EventoActual { get => eventoActual; set => eventoActual = value; }
-        public double ProximaLlegadaClienteMatricula { get => proximaLlegadaClienteMatricula; set => proximaLlegadaClienteMatricula = value; }
-        public double ProximaLlegadaClienteRenovacion1 { get => ProximaLlegadaClienteRenovacion; set => ProximaLlegadaClienteRenovacion = value; }
+        public string ProximaLlegadaClienteMatricula { get => proximaLlegadaClienteMatricula; set => proximaLlegadaClienteMatricula = value; }
+        public string ProximaLlegadaClienteRenovacion1 { get => ProximaLlegadaClienteRenovacion; set => ProximaLlegadaClienteRenovacion = value; }
         public string FinAtencionMatriculaTomas { get => finAtencionMatriculaTomas; set => finAtencionMatriculaTomas = value; }
         public string FinAtencionMatriculaAlicia { get => finAtencionMatriculaAlicia; set => finAtencionMatriculaAlicia = value; }
         public string FinAtencionMatriculaManuel { get => finAtencionMatriculaManuel; set => finAtencionMatriculaManuel = value; }
