@@ -88,6 +88,10 @@
     <Compile Include="Clases\Fila.cs" />
     <Compile Include="Clases\Servidores\Servidor.cs" />
     <Compile Include="Controlador\Gestor.cs" />
+    <Compile Include="Controlador\GestorDescansos.cs" />
+    <Compile Include="Controlador\GestorFinDia.cs" />
+    <Compile Include="Controlador\GestorFinesAtencion.cs" />
+    <Compile Include="Controlador\GestorLlegadas.cs" />
     <Compile Include="DataSet1.cs">
       <DependentUpon>DataSet1.xsd</DependentUpon>
     </Compile>

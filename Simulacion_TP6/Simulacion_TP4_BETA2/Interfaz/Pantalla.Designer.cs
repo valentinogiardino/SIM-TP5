@@ -64,7 +64,7 @@ namespace Simulacion_TP1
             // 
             // txtHoraDesde
             // 
-            this.txtHoraDesde.Location = new System.Drawing.Point(229, 89);
+            this.txtHoraDesde.Location = new System.Drawing.Point(231, 44);
             this.txtHoraDesde.Name = "txtHoraDesde";
             this.txtHoraDesde.Size = new System.Drawing.Size(82, 20);
             this.txtHoraDesde.TabIndex = 27;
@@ -72,15 +72,15 @@ namespace Simulacion_TP1
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(95, 96);
+            this.label1.Location = new System.Drawing.Point(88, 47);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(128, 13);
+            this.label1.Size = new System.Drawing.Size(137, 13);
             this.label1.TabIndex = 29;
-            this.label1.Text = "Hora Desde para mostrar:";
+            this.label1.Text = "Minuto Desde para mostrar:";
             // 
             // txtCantidadHoras
             // 
-            this.txtCantidadHoras.Location = new System.Drawing.Point(229, 55);
+            this.txtCantidadHoras.Location = new System.Drawing.Point(231, 77);
             this.txtCantidadHoras.Mask = "99999999";
             this.txtCantidadHoras.Name = "txtCantidadHoras";
             this.txtCantidadHoras.Size = new System.Drawing.Size(82, 20);
@@ -90,11 +90,11 @@ namespace Simulacion_TP1
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(127, 62);
+            this.label2.Location = new System.Drawing.Point(91, 80);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(96, 13);
+            this.label2.Size = new System.Drawing.Size(134, 13);
             this.label2.TabIndex = 28;
-            this.label2.Text = "Cantidad de horas:";
+            this.label2.Text = "Minuto Hasta para mostrar:";
             // 
             // dataGridView2
             // 

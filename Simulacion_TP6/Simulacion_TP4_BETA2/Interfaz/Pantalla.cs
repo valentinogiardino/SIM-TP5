@@ -57,7 +57,7 @@ namespace Simulacion_TP1
             listaClientes = gestor.ListaClientes;
             //List<FilaMuestra> fila2 = listaClientes;    //Se le delega al gestor la generacion de la tabla
             dataGridView2.DataSource = listaClientes;
-            dataGridView2.Columns.Add("Cantidad", "Cantidad");
+            //dataGridView2.Columns.Add("Cantidad", "Cantidad");
             //dataGridView2.Columns.Add("10");
             dataGridView2.Refresh();
             //foreach (Cliente cliente in listaClientes)
@@ -69,11 +69,7 @@ namespace Simulacion_TP1
             dataGridView1.Refresh();
         }
 
-        public void AgregarClientesTabla()
-        {
-            
-            dataGridView1.Refresh();
-        }
+        
 
         private void button1_Click(object sender, EventArgs e)
         {

@@ -49,9 +49,7 @@ namespace Simulacion_TP1.Clases
         private int contadorDirectoAColaMatricula;
         private int contadorDirectoAColaRenovacion;
 
-        string tipo;
-        string estado;
-        double horaIngreso;
+        
 
 
 
@@ -166,7 +164,7 @@ namespace Simulacion_TP1.Clases
             
         }
 
-        public FilaMuestra(double hora, string eventoActual, string proximaLlegadaClienteMatricula, string proximaLlegadaClienteRenovacion, string finAtencionMatriculaTomas, string finAtencionMatriculaAlicia, string finAtencionMatriculaManuel, string finAtencionRenovacionLucia, string finAtencionRenovacionMaria, string finAtencionRenovacionManuel, string descanso, string finDelDia, string tomas, string alicia, string lucia, string maria, string manuel, int colaMatricula, int colaRenovacion, int cantidadClientesMatriculaAtendidos, int cantidadClienteRenovacionAtendidos, int cantidadClientesMatriculaNoAtendidos, int cantidadClienteRenovacionNoAtendidos, int contadorDirectoAColaMatricula, int contadorDirectoAColaRenovacion, string tipo, string estado, double horaIngreso)
+        public FilaMuestra(double hora, string eventoActual, string proximaLlegadaClienteMatricula, string proximaLlegadaClienteRenovacion, string finAtencionMatriculaTomas, string finAtencionMatriculaAlicia, string finAtencionMatriculaManuel, string finAtencionRenovacionLucia, string finAtencionRenovacionMaria, string finAtencionRenovacionManuel, string descanso, string finDelDia, string tomas, string alicia, string lucia, string maria, string manuel, int colaMatricula, int colaRenovacion, int cantidadClientesMatriculaAtendidos, int cantidadClienteRenovacionAtendidos, int cantidadClientesMatriculaNoAtendidos, int cantidadClienteRenovacionNoAtendidos, int contadorDirectoAColaMatricula, int contadorDirectoAColaRenovacion)
         {
             this.hora = hora;
             this.eventoActual = eventoActual;
@@ -193,9 +191,7 @@ namespace Simulacion_TP1.Clases
             this.cantidadClienteRenovacionNoAtendidos = cantidadClienteRenovacionNoAtendidos;
             this.contadorDirectoAColaMatricula = contadorDirectoAColaMatricula;
             this.contadorDirectoAColaRenovacion = contadorDirectoAColaRenovacion;
-            this.tipo = tipo;
-            this.estado = estado;
-            this.horaIngreso = horaIngreso;
+
         }
 
         public double Hora { get => hora; set => hora = value; }
@@ -223,9 +219,7 @@ namespace Simulacion_TP1.Clases
         public int CantidadClienteRenovacionNoAtendidos { get => cantidadClienteRenovacionNoAtendidos; set => cantidadClienteRenovacionNoAtendidos = value; }
         public int ContadorDirectoAColaMatricula { get => contadorDirectoAColaMatricula; set => contadorDirectoAColaMatricula = value; }
         public int ContadorDirectoAColaRenovacion { get => contadorDirectoAColaRenovacion; set => contadorDirectoAColaRenovacion = value; }
-        public string Tipo { get => tipo; set => tipo = value; }
-        public string Estado { get => estado; set => estado = value; }
-        public double HoraIngreso { get => horaIngreso; set => horaIngreso = value; }
+        
 
 
 
