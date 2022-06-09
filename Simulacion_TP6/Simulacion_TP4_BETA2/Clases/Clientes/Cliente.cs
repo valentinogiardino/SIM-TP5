@@ -8,20 +8,25 @@ namespace Simulacion_TP1.Clases
 {
     public class Cliente : IComparable<Cliente>
     {
+        int id;
         string tipo;
         string estado;
         double horaIngreso;
 
-        public Cliente(string tipo, string estado, double horaIngreso)
+
+
+        public Cliente(int id, string tipo, string estado, double horaIngreso)
         {
-            this.Tipo = tipo;
-            this.Estado = estado;
-            this.HoraIngreso = horaIngreso;
+            this.Id = id;
+            this.tipo = tipo;
+            this.estado = estado;
+            this.horaIngreso = horaIngreso;
         }
 
         public string Tipo { get => tipo; set => tipo = value; }
         public string Estado { get => estado; set => estado = value; }
         public double HoraIngreso { get => horaIngreso; set => horaIngreso = value; }
+        public int Id { get => id; set => id = value; }
 
         public int CompareTo(Cliente other)
         {

@@ -10,13 +10,16 @@ namespace Simulacion_TP1.Controlador
     public class GestorLlegadas
     {
         Gestor gestor;
+        int idCliente;
 
         public GestorLlegadas(Gestor gestor)
         {
             this.Gestor = gestor;
+            this.idCliente = 0;
         }
 
         public Gestor Gestor { get => gestor; set => gestor = value; }
+        public int IdCliente { get => idCliente; set => idCliente = value; }
 
         public Fila generarFilaLlegadaClienteMatricula(Fila filaAnterior)
         {
@@ -29,7 +32,8 @@ namespace Simulacion_TP1.Controlador
             Evento proximaLlegadaClienteMatricula = new Evento("proximaLlegadaClienteMatricula", gestor.obtenerProximaLlegadaMatricula() + filaNueva.Hora);
             filaNueva.ProximaLlegadaClienteMatricula = proximaLlegadaClienteMatricula;
 
-            Cliente cliente = new Cliente("matricula", "Esperando Atencion", filaNueva.Hora);
+            Cliente cliente = new Cliente(idCliente, "matricula", "Esperando Atencion", filaNueva.Hora);
+            idCliente++;
 
             if (filaAnterior.Tomas1.Estado == "Libre")  //&& filaAnterior.Tomas1.descansoPendiente = false) Habria que agregar un atributo en el servidor que sea una bandera para saber si tiene un descanso pendiente
             {
@@ -90,7 +94,8 @@ namespace Simulacion_TP1.Controlador
             Evento proximaLlegadaClienteRenovacion = new Evento("proximaLlegadaClienteRenovacion", gestor.obtenerProximoFinAtencionRenovacion() + filaNueva.Hora);
             filaNueva.ProximaLlegadaClienteRenovacion1 = proximaLlegadaClienteRenovacion;
 
-            Cliente cliente = new Cliente("renovacion", "Esperando Atencion", filaNueva.Hora);
+            Cliente cliente = new Cliente(idCliente, "renovacion", "Esperando Atencion", filaNueva.Hora);
+            idCliente++;
 
             if (filaAnterior.Lucia1.Estado == "Libre")
             {

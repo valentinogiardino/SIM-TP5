@@ -97,6 +97,8 @@ namespace Simulacion_TP1.Controlador
                 filaNueva.Lucia1.Estado = "Libre";
                 filaNueva.Maria1.Estado = "Libre";
                 filaNueva.Manuel1.Estado = "Libre";
+                //filaNueva.ClientesMatriculaEnElSistema.Clear();
+                //filaNueva.ClientesRenovacionEnElSistema.Clear();
 
             }
 

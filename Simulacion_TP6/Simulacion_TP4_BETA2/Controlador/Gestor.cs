@@ -15,10 +15,10 @@ namespace Simulacion_TP1.Controlador
         private int cantidadHoras;
         private int horaDesde;
 
-        Random randomPoissonRenovacion = new Random();
-        Random randomPoissonMatricula = new Random(200);
-        Random randomUniforme = new Random(100);
-        Random randomNormal = new Random(300);
+        Random randomPoissonRenovacion;
+        Random randomPoissonMatricula;
+        Random randomUniforme;
+        Random randomNormal;
 
 
         GestorLlegadas gestorLlegadas;
@@ -26,6 +26,8 @@ namespace Simulacion_TP1.Controlador
         GestorDescansos gestorDescansos;
         GestorFinDia gestorFinDia;
 
+        DataTable tabla = new DataTable();
+        DataTable tabla2 = new DataTable();
 
         private List<Cliente> listaClientes = new List<Cliente>();
 
@@ -38,6 +40,8 @@ namespace Simulacion_TP1.Controlador
         public Random RandomUniforme { get => randomUniforme; set => randomUniforme = value; }
         public Random RandomNormal { get => randomNormal; set => randomNormal = value; }
         public List<Cliente> ListaClientes { get => listaClientes; set => listaClientes = value; }
+        public DataTable Tabla { get => tabla; set => tabla = value; }
+        public DataTable Tabla2 { get => tabla2; set => tabla2 = value; }
 
         public Gestor(Pantalla pantalla, int cantidadHoras, int horaDesde)
         {
@@ -51,10 +55,7 @@ namespace Simulacion_TP1.Controlador
         public Gestor(Pantalla pantalla)
         {
             this.Pantalla = pantalla;
-            this.gestorLlegadas = new GestorLlegadas(this);
-            this.gestorFinesAtencion = new GestorFinesAtencion(this);
-            this.gestorDescansos = new GestorDescansos(this);
-            this.gestorFinDia = new GestorFinDia(this);
+            
 
         }
 
@@ -62,6 +63,7 @@ namespace Simulacion_TP1.Controlador
         {
             this.CantidadHoras = cantidadHoras;
             this.HoraDesde = horaDesde;
+            
 
         }
 
@@ -147,25 +149,60 @@ namespace Simulacion_TP1.Controlador
 
         public List<FilaMuestra> generarTablaSimulacion()
         {
+            this.gestorLlegadas = new GestorLlegadas(this);
+            this.gestorFinesAtencion = new GestorFinesAtencion(this);
+            this.gestorDescansos = new GestorDescansos(this);
+            this.gestorFinDia = new GestorFinDia(this);
 
-     
+            this.randomPoissonRenovacion = new Random();
+            this.randomPoissonMatricula = new Random(200);
+            this.randomUniforme = new Random(100);
+            this.randomNormal = new Random(300);
+
             Fila filaNueva = null;
             List<FilaMuestra> listaFilasMuestra = new List<FilaMuestra>();
+
+            this.tabla = new DataTable();
+            this.tabla2 = new DataTable();
 
             for (double i = 0; i <= this.CantidadHoras; i++)
             {
                 filaNueva = generarRenglones(i, filaNueva);
+                
                 i = filaNueva.Hora;
                 if (this.HoraDesde <= i && i <= (this.HoraDesde + 400) || i == CantidadHoras)
                 {
                     FilaMuestra filaMuestra = new FilaMuestra(filaNueva);
-                    
                     listaFilasMuestra.Add(filaMuestra);
-                    this.listaClientes.AddRange(cargarClientes(filaNueva));
+                   
+                    cargarTablaClientes(this.tabla, filaNueva.ClientesMatriculaEnElSistema);
+                    cargarTablaClientes(this.tabla2, filaNueva.ClientesRenovacionEnElSistema);
+
                 }
             }
 
             return listaFilasMuestra;
+        }
+
+        private void cargarTablaClientes(DataTable tabla, List<Cliente> listaClientes)
+        {
+            DataRow row = tabla.NewRow();
+            foreach (Cliente cliente in listaClientes)
+            {
+
+                DataColumn columna1 = new DataColumn("Estado_Cliente" + cliente.Id.ToString());
+                DataColumn columna2 = new DataColumn("HoraIngreso" + cliente.Id.ToString());
+                if (!tabla.Columns.Contains("Estado_Cliente" + cliente.Id.ToString()))
+                {
+                    tabla.Columns.Add(columna1);
+                    tabla.Columns.Add(columna2);
+                }
+
+                row["Estado_Cliente" + cliente.Id.ToString()] = cliente.Estado.ToString();
+                row["HoraIngreso" + cliente.Id.ToString()] = cliente.HoraIngreso.ToString();
+
+            }
+            tabla.Rows.Add(row);
         }
 
         public List<Cliente> cargarClientes(Fila filaAMostrar)
