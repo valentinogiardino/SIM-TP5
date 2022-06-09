@@ -25,10 +25,16 @@ namespace Simulacion_TP1
             InitializeComponent();
             this.gestor = new Gestor(this); //Se guarda una referencia al gestor. El gestor tambien contendra una referencia a la pantalla. Esto permite la comunicacion
         }
-
+        
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void Pantalla_Load(object sender, EventArgs e)
         {
+            UniformeATextBox.Text = 8.7.ToString();
+            UniformeBTextBox.Text = 15.2.ToString();
+            MediaTextBox.Text = 16.7.ToString(); 
+            DesviacionTextBox.Text = 5.ToString();
+            LambdaMatricula.Text = 2.886.ToString();
+            LambdaRenovacion.Text = 4.846.ToString();
 
         }
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -36,13 +42,31 @@ namespace Simulacion_TP1
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+<<<<<<< Updated upstream:Simulacion_TP5/Simulacion_TP4_BETA2/Interfaz/Pantalla.cs
         private void btnGenerar_Click(object sender, EventArgs e)
+=======
+
+
+
+
+        public void cargarTabla()
+>>>>>>> Stashed changes:Simulacion_TP6/Simulacion_TP4_BETA2/Interfaz/Pantalla.cs
         {
 
             int cantidadHoras = int.Parse(txtCantidadHoras.Text);
             int horaDesde = int.Parse(txtHoraDesde.Text);
+            double a_matricula = double.Parse(UniformeATextBox.Text);
+            double b_matricula = double.Parse(UniformeBTextBox.Text);
+            double media_renovacion = double.Parse(MediaTextBox.Text);
+            double desviacion_renovacion = double.Parse(DesviacionTextBox.Text);
+            double lambdaMatricula = double.Parse(LambdaMatricula.Text);
+            double lambdaRenovacion = double.Parse(LambdaRenovacion.Text);
 
-            this.gestor.tomarDatos(cantidadHoras, horaDesde);
+
+
+
+
+            this.gestor.tomarDatos(cantidadHoras, horaDesde, a_matricula, b_matricula, media_renovacion, desviacion_renovacion, lambdaMatricula, lambdaRenovacion);
 
             cargarTabla();
 
@@ -69,6 +93,11 @@ namespace Simulacion_TP1
 
             dataGridView1.Refresh();
         }
+<<<<<<< Updated upstream:Simulacion_TP5/Simulacion_TP4_BETA2/Interfaz/Pantalla.cs
+=======
+
+>>>>>>> Stashed changes:Simulacion_TP6/Simulacion_TP4_BETA2/Interfaz/Pantalla.cs
         
     }
+    
 }
