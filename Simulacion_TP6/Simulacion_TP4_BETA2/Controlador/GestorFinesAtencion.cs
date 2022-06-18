@@ -122,10 +122,20 @@ namespace Simulacion_TP1.Controlador
             {
                 List<Cliente> clientesEnElSistema = filaAnterior.ClientesRenovacionEnElSistema;
                 Cliente cliente = gestor.buscarProximoCliente(clientesEnElSistema);
-                cliente.Estado = "Siendo Atendido";
-                Evento finAtencionRenovacion = new Evento("finAtencionRenovacionLucia", cliente, filaAnterior.Lucia1, gestor.obtenerProximoFinAtencionRenovacion() + filaNueva.Hora);
-                filaNueva.FinAtencionRenovacionLucia = finAtencionRenovacion;
-                filaNueva.ColaRenovacion--;
+                if (cliente == null)
+                {
+                    filaNueva.Lucia1.Estado = "Libre";
+                    filaNueva.FinAtencionRenovacionLucia = null;
+                    filaNueva.ColaRenovacion--;
+                }
+                else
+                {
+                    cliente.Estado = "Siendo Atendido";
+                    Evento finAtencionRenovacion = new Evento("finAtencionRenovacionLucia", cliente, filaAnterior.Lucia1, gestor.obtenerProximoFinAtencionRenovacion() + filaNueva.Hora);
+                    filaNueva.FinAtencionRenovacionLucia = finAtencionRenovacion;
+                    filaNueva.ColaRenovacion--;
+                }
+               
             }
 
 
@@ -166,10 +176,20 @@ namespace Simulacion_TP1.Controlador
             {
                 List<Cliente> clientesEnElSistema = filaAnterior.ClientesRenovacionEnElSistema;
                 Cliente cliente = gestor.buscarProximoCliente(clientesEnElSistema);
-                cliente.Estado = "Siendo Atendido";
-                Evento finAtencionRenovacion = new Evento("finAtencionRenovacionMaria", cliente, filaAnterior.Maria1, gestor.obtenerProximoFinAtencionRenovacion() + filaNueva.Hora);
-                filaNueva.FinAtencionRenovacionMaria = finAtencionRenovacion;
-                filaNueva.ColaRenovacion--;
+                if (cliente == null)
+                {
+                    filaNueva.Maria1.Estado = "Libre";
+                    filaNueva.FinAtencionRenovacionMaria = null;
+                    filaNueva.ColaRenovacion--;
+                }
+                else
+                {
+                    cliente.Estado = "Siendo Atendido";
+                    Evento finAtencionRenovacion = new Evento("finAtencionRenovacionMaria", cliente, filaAnterior.Maria1, gestor.obtenerProximoFinAtencionRenovacion() + filaNueva.Hora);
+                    filaNueva.FinAtencionRenovacionMaria = finAtencionRenovacion;
+                    filaNueva.ColaRenovacion--;
+                }
+               
             }
             
             if (filaAnterior.ColaRenovacion == 0 && (filaAnterior.Maria1.DescansoPendiente == false))
@@ -208,6 +228,7 @@ namespace Simulacion_TP1.Controlador
                 List<Cliente> clientesEnElSistema = filaAnterior.ClientesMatriculaEnElSistema;
                 clientesEnElSistema.AddRange(filaAnterior.ClientesRenovacionEnElSistema);
                 Cliente cliente = gestor.buscarProximoCliente(clientesEnElSistema);
+                
                 if (cliente.Tipo == "matricula")
                 {
                     cliente.Estado = "Siendo Atendido";

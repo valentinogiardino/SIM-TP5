@@ -14,6 +14,13 @@ namespace Simulacion_TP1.Controlador
         private Pantalla pantalla;
         private int cantidadHoras;
         private int horaDesde;
+        private double a_matricula;
+        private double b_matricula;
+        private double mediaRenovacion;
+        private double desviacionRenovacion;
+        private double lambdaMatricula;
+        private double lambdaRenovacion;
+
 
         Random randomPoissonRenovacion;
         Random randomPoissonMatricula;
@@ -42,6 +49,12 @@ namespace Simulacion_TP1.Controlador
         public List<Cliente> ListaClientes { get => listaClientes; set => listaClientes = value; }
         public DataTable Tabla { get => tabla; set => tabla = value; }
         public DataTable Tabla2 { get => tabla2; set => tabla2 = value; }
+        public double A_matricula { get => a_matricula; set => a_matricula = value; }
+        public double B_matricula { get => b_matricula; set => b_matricula = value; }
+        public double MediaRenovacion { get => mediaRenovacion; set => mediaRenovacion = value; }
+        public double DesviacionRenovacion { get => desviacionRenovacion; set => desviacionRenovacion = value; }
+        public double LambdaMatricula { get => lambdaMatricula; set => lambdaMatricula = value; }
+        public double LambdaRenovacion { get => lambdaRenovacion; set => lambdaRenovacion = value; }
 
         public Gestor(Pantalla pantalla, int cantidadHoras, int horaDesde)
         {
@@ -59,8 +72,16 @@ namespace Simulacion_TP1.Controlador
 
         }
 
-        public void tomarDatos(int cantidadHoras, int horaDesde)
+        public void tomarDatos(int cantidadHoras, int horaDesde, double a_matricula, double b_matricula, double mediaRenovacion, double desviacionRenovacion, double lambdaMatricula, double lambdaRenovacion)
         {
+            this.CantidadHoras = cantidadHoras;
+            this.HoraDesde = horaDesde;
+            this.A_matricula = a_matricula;
+            this.B_matricula = b_matricula;
+            this.MediaRenovacion = mediaRenovacion;
+            this.DesviacionRenovacion = desviacionRenovacion;
+            this.LambdaMatricula = lambdaMatricula;
+            this.LambdaRenovacion = lambdaRenovacion;
             this.CantidadHoras = cantidadHoras;
             this.HoraDesde = horaDesde;
             
@@ -126,25 +147,26 @@ namespace Simulacion_TP1.Controlador
 
         public double obtenerProximaLlegadaMatricula()
         {
-            return generarNumeroPoisson(2.886, this.RandomPoissonMatricula);
+           
+            return generarNumeroPoisson(this.LambdaMatricula, this.RandomPoissonMatricula);
         }
 
         public double obtenerProximaLlegadaRenovacion()
         {
-            return generarNumeroPoisson(4.846, this.RandomPoissonRenovacion);
+            return generarNumeroPoisson(this.LambdaRenovacion, this.RandomPoissonRenovacion);
         }
 
         public double obtenerProximoFinAtencionMatricula()
         {
-            return generarNumeroUniforme(8.7, 15.2,  this.RandomUniforme); 
+            return generarNumeroUniforme(this.A_matricula, this.B_matricula,  this.RandomUniforme); 
         }
 
         public double obtenerProximoFinAtencionRenovacion()
         {
-            return generarNumeroNormal(16.7, 5, this.RandomNormal);
+            return generarNumeroNormal(this.MediaRenovacion, this.DesviacionRenovacion, this.RandomNormal);
         }
 
-       
+
 
 
         public List<FilaMuestra> generarTablaSimulacion()
@@ -155,9 +177,12 @@ namespace Simulacion_TP1.Controlador
             this.gestorFinDia = new GestorFinDia(this);
 
             this.randomPoissonRenovacion = new Random();
-            this.randomPoissonMatricula = new Random(200);
-            this.randomUniforme = new Random(100);
-            this.randomNormal = new Random(300);
+            Thread.Sleep(1);
+            this.randomPoissonMatricula = new Random();
+            Thread.Sleep(1);
+            this.randomUniforme = new Random();
+            Thread.Sleep(1);
+            this.randomNormal = new Random();
 
             Fila filaNueva = null;
             List<FilaMuestra> listaFilasMuestra = new List<FilaMuestra>();

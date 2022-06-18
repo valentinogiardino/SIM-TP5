@@ -50,6 +50,8 @@ namespace Simulacion_TP1.Controlador
                     cliente.Estado = "Siendo Atendido";
                     filaNueva.FinAtencionMatriculaTomas = new Evento("finAtencionMatriculaTomas", cliente, filaAnterior.Tomas1, gestor.obtenerProximoFinAtencionMatricula() + filaNueva.Hora);
                     filaNueva.Tomas1.Estado = "Ocupado";
+                    filaNueva.ColaMatricula--;
+
                 }
                 else
                 {
@@ -74,9 +76,20 @@ namespace Simulacion_TP1.Controlador
                 {
                     List<Cliente> clientesEnElSistema = filaAnterior.ClientesRenovacionEnElSistema;
                     Cliente cliente = gestor.buscarProximoCliente(clientesEnElSistema);
-                    cliente.Estado = "Siendo Atendido";
-                    filaNueva.FinAtencionRenovacionLucia = new Evento("finAtencionRenovacionLucia", cliente, filaAnterior.Lucia1, gestor.obtenerProximaLlegadaRenovacion() + filaNueva.Hora);
-                    filaNueva.Lucia1.Estado = "Ocupado";
+                    if (cliente == null)
+                    {
+                        filaNueva.FinAtencionRenovacionLucia = null;
+                        filaNueva.Lucia1.Estado = "Libre";
+                        filaNueva.ColaRenovacion--;
+                    }
+                    else
+                    {
+                        cliente.Estado = "Siendo Atendido";
+                        filaNueva.FinAtencionRenovacionLucia = new Evento("finAtencionRenovacionLucia", cliente, filaAnterior.Lucia1, gestor.obtenerProximaLlegadaRenovacion() + filaNueva.Hora);
+                        filaNueva.Lucia1.Estado = "Ocupado";
+                        filaNueva.ColaRenovacion--;
+                    }
+                    
                 }
                 else
                 {
@@ -112,20 +125,28 @@ namespace Simulacion_TP1.Controlador
                     List<Cliente> clientesEnElSistema = filaAnterior.ClientesMatriculaEnElSistema;
                     clientesEnElSistema.AddRange(filaAnterior.ClientesRenovacionEnElSistema);
                     Cliente cliente = gestor.buscarProximoCliente(clientesEnElSistema);
-                    if (cliente.Tipo == "matricula")
+                    if (cliente == null)
                     {
-                        cliente.Estado = "Siendo Atendido";
-                        Evento finAtencionMatricula = new Evento("finAtencionMatriculaManuel", cliente, filaAnterior.Manuel1, gestor.obtenerProximoFinAtencionMatricula() + filaNueva.Hora);
-                        filaNueva.FinAtencionMatriculaManuel = finAtencionMatricula;
-                        filaNueva.ColaMatricula--;
+                        filaNueva.Manuel1.Estado = "Libre";
                     }
                     else
                     {
-                        cliente.Estado = "Siendo Atendido";
-                        Evento finAtencionRenovacion = new Evento("finAtencionRenovacionManuel", cliente, filaAnterior.Manuel1, gestor.obtenerProximoFinAtencionRenovacion() + filaNueva.Hora);
-                        filaNueva.FinAtencionRenovacionManuel = finAtencionRenovacion;
-                        filaNueva.ColaRenovacion--;
+                        if (cliente.Tipo == "matricula")
+                        {
+                            cliente.Estado = "Siendo Atendido";
+                            Evento finAtencionMatricula = new Evento("finAtencionMatriculaManuel", cliente, filaAnterior.Manuel1, gestor.obtenerProximoFinAtencionMatricula() + filaNueva.Hora);
+                            filaNueva.FinAtencionMatriculaManuel = finAtencionMatricula;
+                            filaNueva.ColaMatricula--;
+                        }
+                        else
+                        {
+                            cliente.Estado = "Siendo Atendido";
+                            Evento finAtencionRenovacion = new Evento("finAtencionRenovacionManuel", cliente, filaAnterior.Manuel1, gestor.obtenerProximoFinAtencionRenovacion() + filaNueva.Hora);
+                            filaNueva.FinAtencionRenovacionManuel = finAtencionRenovacion;
+                            filaNueva.ColaRenovacion--;
+                        }
                     }
+                    
 
                 }
                 else
@@ -154,6 +175,8 @@ namespace Simulacion_TP1.Controlador
                     cliente.Estado = "Siendo Atendido";
                     filaNueva.FinAtencionMatriculaAlicia = new Evento("finAtencionMatriculaAlicia", cliente, filaAnterior.Alicia1, gestor.obtenerProximoFinAtencionMatricula() + filaNueva.Hora);
                     filaNueva.Alicia1.Estado = "Ocupado";
+                    filaNueva.ColaMatricula--;
+
                 }
                 else
                 {
@@ -179,10 +202,22 @@ namespace Simulacion_TP1.Controlador
                 {
                     List<Cliente> clientesEnElSistema = filaAnterior.ClientesRenovacionEnElSistema;
                     Cliente cliente = gestor.buscarProximoCliente(clientesEnElSistema);
-                    cliente.Estado = "Siendo Atendido";
-                    filaNueva.FinAtencionRenovacionMaria = new Evento("finAtencionRenovacionMaria", cliente, filaAnterior.Maria1, gestor.obtenerProximaLlegadaRenovacion() + filaNueva.Hora);
-                    filaNueva.Maria1.Estado = "Ocupado";
-                    
+                    if (cliente == null)
+                    {
+                        filaNueva.FinAtencionRenovacionMaria = null;
+
+                        filaNueva.Maria1.Estado = "Libre";
+                        filaNueva.ColaRenovacion--;
+                    }
+                    else
+                    {
+                        cliente.Estado = "Siendo Atendido";
+                        filaNueva.FinAtencionRenovacionMaria = new Evento("finAtencionRenovacionMaria", cliente, filaAnterior.Maria1, gestor.obtenerProximaLlegadaRenovacion() + filaNueva.Hora);
+                        filaNueva.Maria1.Estado = "Ocupado";
+                        filaNueva.ColaRenovacion--;
+                    }
+                   
+
                 }
                 else
                 {

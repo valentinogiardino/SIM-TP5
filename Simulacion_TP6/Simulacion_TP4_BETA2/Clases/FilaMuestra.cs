@@ -64,7 +64,7 @@ namespace Simulacion_TP1.Clases
             }
             else
             {
-                this.ProximaLlegadaClienteMatricula = filaAMostrar.ProximaLlegadaClienteMatricula.Tiempo.ToString();
+                this.ProximaLlegadaClienteMatricula = Math.Round(filaAMostrar.ProximaLlegadaClienteMatricula.Tiempo,2).ToString();
             }
             if (filaAMostrar.ProximaLlegadaClienteRenovacion1 == null)
             {
@@ -72,7 +72,7 @@ namespace Simulacion_TP1.Clases
             }
             else
             {
-                this.ProximaLlegadaClienteRenovacion1 = filaAMostrar.ProximaLlegadaClienteRenovacion1.Tiempo.ToString();
+                this.ProximaLlegadaClienteRenovacion1 = Math.Round(filaAMostrar.ProximaLlegadaClienteRenovacion1.Tiempo,2).ToString();
             }
 
             if (filaAMostrar.FinAtencionMatriculaTomas == null)
@@ -81,7 +81,7 @@ namespace Simulacion_TP1.Clases
             }
             else
             {
-                this.FinAtencionMatriculaTomas = filaAMostrar.FinAtencionMatriculaTomas.Tiempo.ToString();
+                this.FinAtencionMatriculaTomas = Math.Round(filaAMostrar.FinAtencionMatriculaTomas.Tiempo,2).ToString();
             }
 
             if (filaAMostrar.FinAtencionMatriculaAlicia == null)
@@ -90,7 +90,7 @@ namespace Simulacion_TP1.Clases
             }
             else
             {
-                this.FinAtencionMatriculaAlicia = filaAMostrar.FinAtencionMatriculaAlicia.Tiempo.ToString();
+                this.FinAtencionMatriculaAlicia = Math.Round(filaAMostrar.FinAtencionMatriculaAlicia.Tiempo,2).ToString();
             }
 
             if (filaAMostrar.FinAtencionMatriculaManuel == null)
@@ -99,7 +99,7 @@ namespace Simulacion_TP1.Clases
             }
             else
             {
-                this.FinAtencionMatriculaManuel = filaAMostrar.FinAtencionMatriculaManuel.Tiempo.ToString();
+                this.FinAtencionMatriculaManuel = Math.Round(filaAMostrar.FinAtencionMatriculaManuel.Tiempo,2).ToString();
             }
 
             if (filaAMostrar.FinAtencionRenovacionLucia == null)
@@ -108,7 +108,7 @@ namespace Simulacion_TP1.Clases
             }
             else
             {
-                this.FinAtencionRenovacionLucia = filaAMostrar.FinAtencionRenovacionLucia.Tiempo.ToString();
+                this.FinAtencionRenovacionLucia = Math.Round(filaAMostrar.FinAtencionRenovacionLucia.Tiempo,2).ToString();
             }
 
             if (filaAMostrar.FinAtencionRenovacionMaria == null)
@@ -117,7 +117,7 @@ namespace Simulacion_TP1.Clases
             }
             else
             {
-                this.FinAtencionRenovacionMaria = filaAMostrar.FinAtencionRenovacionMaria.Tiempo.ToString();
+                this.FinAtencionRenovacionMaria = Math.Round(filaAMostrar.FinAtencionRenovacionMaria.Tiempo,2).ToString();
             }
 
             if (filaAMostrar.FinAtencionRenovacionManuel == null)
@@ -126,7 +126,7 @@ namespace Simulacion_TP1.Clases
             }
             else
             {
-                this.FinAtencionRenovacionManuel = filaAMostrar.FinAtencionRenovacionManuel.Tiempo.ToString();
+                this.FinAtencionRenovacionManuel = Math.Round(filaAMostrar.FinAtencionRenovacionManuel.Tiempo,2).ToString();
             }
 
             if (filaAMostrar.Descanso == null)
@@ -135,7 +135,7 @@ namespace Simulacion_TP1.Clases
             }
             else
             {
-                this.Descanso = filaAMostrar.Descanso.Tiempo.ToString();
+                this.Descanso = Math.Round(filaAMostrar.Descanso.Tiempo,2).ToString();
             }
 
             if (filaAMostrar.FinDelDia == null)
@@ -144,7 +144,7 @@ namespace Simulacion_TP1.Clases
             }
             else
             {
-                this.FinDelDia = filaAMostrar.FinDelDia.Tiempo.ToString();
+                this.FinDelDia = Math.Round(filaAMostrar.FinDelDia.Tiempo,2).ToString();
             }
 
             
