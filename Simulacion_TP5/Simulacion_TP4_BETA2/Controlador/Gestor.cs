@@ -14,303 +14,422 @@ namespace Simulacion_TP1.Controlador
         private Pantalla pantalla;
         private int cantidadHoras;
         private int horaDesde;
-        private Generador generadorLlegadaMatricula;
-        private Generador generadorLlegadaLicencia;
-        private Generador generadorFinMatricula;
-        private Generador generadorFinLicencia;
+        private double a_matricula;
+        private double b_matricula;
+        private double mediaRenovacion;
+        private double desviacionRenovacion;
+        private double lambdaMatricula;
+        private double lambdaRenovacion;
+
+
+        Random randomPoissonRenovacion;
+        Random randomPoissonMatricula;
+        Random randomUniforme;
+        Random randomNormal;
+
+
+        GestorLlegadas gestorLlegadas;
+        GestorFinesAtencion gestorFinesAtencion;
+        GestorDescansos gestorDescansos;
+        GestorFinDia gestorFinDia;
+
+        DataTable tabla = new DataTable();
+        DataTable tabla2 = new DataTable();
+
+        private List<Cliente> listaClientes = new List<Cliente>();
 
         public Pantalla Pantalla { get => pantalla; set => pantalla = value; }
         public int CantidadHoras { get => cantidadHoras; set => cantidadHoras = value; }
         public int HoraDesde { get => horaDesde; set => horaDesde = value; }
-        public Generador GeneradorLlegadaMatricula { get => generadorLlegadaMatricula; set => generadorLlegadaMatricula = value; }
-        public Generador GeneradorLlegadaLicencia { get => generadorLlegadaLicencia; set => generadorLlegadaLicencia = value; }
-        public Generador GeneradorFinMatricula { get => generadorFinMatricula; set => generadorFinMatricula = value; }
-        public Generador GeneradorFinLicencia { get => generadorFinLicencia; set => generadorFinLicencia = value; }
+       
+        public Random RandomPoissonRenovacion { get => randomPoissonRenovacion; set => randomPoissonRenovacion = value; }
+        public Random RandomPoissonMatricula { get => randomPoissonMatricula; set => randomPoissonMatricula = value; }
+        public Random RandomUniforme { get => randomUniforme; set => randomUniforme = value; }
+        public Random RandomNormal { get => randomNormal; set => randomNormal = value; }
+        public List<Cliente> ListaClientes { get => listaClientes; set => listaClientes = value; }
+        public DataTable Tabla { get => tabla; set => tabla = value; }
+        public DataTable Tabla2 { get => tabla2; set => tabla2 = value; }
+        public double A_matricula { get => a_matricula; set => a_matricula = value; }
+        public double B_matricula { get => b_matricula; set => b_matricula = value; }
+        public double MediaRenovacion { get => mediaRenovacion; set => mediaRenovacion = value; }
+        public double DesviacionRenovacion { get => desviacionRenovacion; set => desviacionRenovacion = value; }
+        public double LambdaMatricula { get => lambdaMatricula; set => lambdaMatricula = value; }
+        public double LambdaRenovacion { get => lambdaRenovacion; set => lambdaRenovacion = value; }
 
-        public Gestor(Pantalla pantalla, int cantidadHoras, int horaDesde, Generador generadorLlegadaMatricula, Generador generadorLlegadaLicencia, Generador generadorFinMatricula, Generador generadorFinLicencia)
+        public Gestor(Pantalla pantalla, int cantidadHoras, int horaDesde)
+        {
+            new Gestor(pantalla);
+            this.CantidadHoras = cantidadHoras;
+            this.HoraDesde = horaDesde;
+           
+           
+        }
+
+        public Gestor(Pantalla pantalla)
         {
             this.Pantalla = pantalla;
-            this.CantidadHoras = cantidadHoras;
-            this.HoraDesde = horaDesde;
-            this.GeneradorLlegadaMatricula = generadorLlegadaMatricula;
-            this.GeneradorLlegadaLicencia = generadorLlegadaLicencia;
-            this.GeneradorFinMatricula = generadorFinMatricula;
-            this.GeneradorFinLicencia = generadorFinLicencia;
-        }
-
-
-        public void tomarDatos(int cantidadHoras, int horaDesde)
-        {
-            this.CantidadHoras = cantidadHoras;
-            this.HoraDesde = horaDesde;
+            
 
         }
 
-        public List<Fila> generarTablaSimulacion()
+        public void tomarDatos(int cantidadHoras, int horaDesde, double a_matricula, double b_matricula, double mediaRenovacion, double desviacionRenovacion, double lambdaMatricula, double lambdaRenovacion)
         {
-            Generador generadorLlegadaMatricula = new Generador("Poisson", 1000000000, 2.886, 0, 4, 1);
-            Generador generadorLlegadaLicencia = new Generador("Poisson", 1000000000, 4.846, 0, 4, 1);
-            Generador generadorFinMatricula = new Generador("Uniforme", 1000000000, 8.7, 15.2, 4, 1);
-            Generador generadorFinLicencia = new Generador("Normal", 1000000000, 16.7, 5, 4, 1);
-            Fila filaNueva = null;
-            List<Fila> listaFilasMuestra = new List<Fila>();
-            for (int i = 0; i <= this.CantidadHoras; i++)
+            this.CantidadHoras = cantidadHoras;
+            this.HoraDesde = horaDesde;
+            this.A_matricula = a_matricula;
+            this.B_matricula = b_matricula;
+            this.MediaRenovacion = mediaRenovacion;
+            this.DesviacionRenovacion = desviacionRenovacion;
+            this.LambdaMatricula = lambdaMatricula;
+            this.LambdaRenovacion = lambdaRenovacion;
+            this.CantidadHoras = cantidadHoras;
+            this.HoraDesde = horaDesde;
+            
+
+        }
+
+
+        public int generarNumeroPoisson(double parametroUno, Random generadorRandom)
+        {
+            parametroUno = Math.Abs(parametroUno);
+
+            double p;
+            int x;
+            double a;
+            double u;
+            p = 1;
+            x = -1;
+            a = Math.Exp(-parametroUno);
+
+            do
             {
-                filaNueva = generarRenglones(i, filaNueva, generadorLlegadaMatricula, generadorLlegadaLicencia, generadorFinMatricula, generadorFinLicencia);
+                u = generadorRandom.NextDouble();
+                p = p * u;
+                x += 1;
+
+            } while (p >= a);
+
+            return x;
+        }
+        public double generarNumeroUniforme(double parametroUno, double parametroDos, Random generadorRandom)
+        {
+
+            double test;
+            double rnd = generadorRandom.NextDouble();
+            test = parametroUno + rnd * (parametroDos - parametroUno);//Este truncamiento ajusta a la cantidad de decimales requerida
+                                                                      // agrega el numero generado a la lista                   // el ciclo se repite solo 1 periodo.
+            return test;
+        }
+
+
+        public double generarNumeroNormal(double media, double desviacion, Random generadorRandom)
+        {
+            desviacion = Math.Abs(desviacion);
+
+            double acum = 0;
+            double z;
+
+            List<double> listaNumeroGenerados = new List<double>();         // Crea una lista vacia de numeros generados
+
+
+            for (int i = 0; i < 12; i++)
+            {
+                acum += generadorRandom.NextDouble();
+                Thread.Sleep(1);
+            }
+
+            z = ((acum - 6) * desviacion + media);
+
+            return z;
+        }
+
+
+
+        public double obtenerProximaLlegadaMatricula()
+        {
+           
+            return generarNumeroPoisson(this.LambdaMatricula, this.RandomPoissonMatricula);
+        }
+
+        public double obtenerProximaLlegadaRenovacion()
+        {
+            return generarNumeroPoisson(this.LambdaRenovacion, this.RandomPoissonRenovacion);
+        }
+
+        public double obtenerProximoFinAtencionMatricula()
+        {
+            return generarNumeroUniforme(this.A_matricula, this.B_matricula,  this.RandomUniforme); 
+        }
+
+        public double obtenerProximoFinAtencionRenovacion()
+        {
+            return generarNumeroNormal(this.MediaRenovacion, this.DesviacionRenovacion, this.RandomNormal);
+        }
+
+
+
+
+        public List<FilaMuestra> generarTablaSimulacion()
+        {
+            this.gestorLlegadas = new GestorLlegadas(this);
+            this.gestorFinesAtencion = new GestorFinesAtencion(this);
+            this.gestorDescansos = new GestorDescansos(this);
+            this.gestorFinDia = new GestorFinDia(this);
+
+            this.randomPoissonRenovacion = new Random();
+            Thread.Sleep(1);
+            this.randomPoissonMatricula = new Random();
+            Thread.Sleep(1);
+            this.randomUniforme = new Random();
+            Thread.Sleep(1);
+            this.randomNormal = new Random();
+
+            Fila filaNueva = null;
+            List<FilaMuestra> listaFilasMuestra = new List<FilaMuestra>();
+
+            this.tabla = new DataTable();
+            this.tabla2 = new DataTable();
+
+            for (double i = 0; i <= this.CantidadHoras; i++)
+            {
+                filaNueva = generarRenglones(i, filaNueva);
+                
+                i = filaNueva.Hora;
                 if (this.HoraDesde <= i && i <= (this.HoraDesde + 400) || i == CantidadHoras)
                 {
-                    listaFilasMuestra.Add(filaNueva);
+                    FilaMuestra filaMuestra = new FilaMuestra(filaNueva);
+                    listaFilasMuestra.Add(filaMuestra);
+                   
+                    cargarTablaClientes(this.tabla, filaNueva.ClientesMatriculaEnElSistema);
+                    cargarTablaClientes(this.tabla2, filaNueva.ClientesRenovacionEnElSistema);
+
                 }
             }
 
             return listaFilasMuestra;
         }
 
-        public void generarNumeros(string funcion, double parametroUno, double parametroDos, int cantidadDecimales, int cantidadIntervalos)
+        private void cargarTablaClientes(DataTable tabla, List<Cliente> listaClientes)
         {
-
-            this.generador = new Generador(funcion, cantidadNumeros, parametroUno, parametroDos, cantidadDecimales, cantidadIntervalos);
-            this.listaNumerosGenerados = new List<double>();
-            foreach (double numero in this.generador.generarNumeros())
+            DataRow row = tabla.NewRow();
+            foreach (Cliente cliente in listaClientes)
             {
-                this.listaNumerosGenerados.Add(ajustarDecimales(numero));
-            }
 
+                DataColumn columna1 = new DataColumn("Estado_Cliente" + cliente.Id.ToString());
+                DataColumn columna2 = new DataColumn("HoraIngreso" + cliente.Id.ToString());
+                if (!tabla.Columns.Contains("Estado_Cliente" + cliente.Id.ToString()))
+                {
+                    tabla.Columns.Add(columna1);
+                    tabla.Columns.Add(columna2);
+                }
+
+                row["Estado_Cliente" + cliente.Id.ToString()] = cliente.Estado.ToString();
+                row["HoraIngreso" + cliente.Id.ToString()] = cliente.HoraIngreso.ToString();
+
+            }
+            tabla.Rows.Add(row);
         }
 
-
-        private Fila generarRenglones(int i, Fila filaAnterior, Generador generadorLlegadaMatricula, Generador generadorLlegadaLicencia, Generador generadorFinMatricula, Generador generadorFinLicencia)
+        public List<Cliente> cargarClientes(Fila filaAMostrar)
         {
-            Fila filaNueva;
+            List<Cliente> listaClientes = new List<Cliente>();
+            foreach (Cliente clienteMatricula in filaAMostrar.ClientesMatriculaEnElSistema)
+            {
+                listaClientes.Add(clienteMatricula);
+            }
+
+            foreach (Cliente clienteRenovacion in filaAMostrar.ClientesRenovacionEnElSistema)
+            {
+                listaClientes.Add(clienteRenovacion);
+            }
+            return listaClientes;
+            
+        }
+
+        private Fila generarRenglones(double i, Fila filaAnterior/*, List<double> listaLlegadaMatricula, List<double> listaLlegadaLicencia, List<double> listaFinMatricula, List<double> listaFinLicencia*/)
+        {
+            Fila filaNueva = new Fila();
 
 
             if (i == 0)
             {
-                Clientes clienteActual = null;
-                string nombreClienteTomas = "";
-                string nombreClienteAlicia = "";
-                string nombreClienteLucia = "";
-                string nombreClienteMaria = "";
-                string nombreClienteManuel = "";
-                //Clientes clienteSiendoAtendidoTomas;
-                //Clientes clienteSiendoAtendidoAlicia;
-                //Clientes clienteSiendoAtendidoLucia;
-                //Clientes clienteSiendoAtendidoMaria;
-                //Clientes clienteSiendoAtendidoManuel;
-                List<Clientes> colaClientesMatricula = new List<Clientes>();
-                List<Clientes> colaClientesLicencia = new List<Clientes>();
-                Fila fila = new Fila(clienteActual,"Comienzo", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "", 0, nombreClienteTomas, "", 0, nombreClienteAlicia, "", 0, nombreClienteLucia, "", 0, nombreClienteMaria, "", 0, nombreClienteManuel, colaClientesMatricula, colaClientesLicencia, 0);
+
+                double hora = 0;
+                Evento eventoActual = new Evento("Inicializacion", 0); ;
+
+                Evento proximaLlegadaClienteMatricula = new Evento("proximaLlegadaClienteMatricula", obtenerProximaLlegadaMatricula());
+                Evento proximaLlegadaClienteRenovacion = new Evento("proximaLlegadaClienteRenovacion", obtenerProximaLlegadaRenovacion());
+
+                Evento finAtencionMatriculaTomas = null;
+                Evento finAtencionMatriculaAlicia = null;
+                Evento finAtencionMatriculaManuel = null;
+
+                Evento finAtencionRenovacionLucia = null;
+                Evento finAtencionRenovacionMaria = null;
+                Evento finAtencionRenovacionManuel = null;
+
+
+                Servidor tomas = new Servidor("Tomas", "Libre", 0);
+                Servidor alicia = new Servidor("Alicia", "Libre", 0);
+
+                Servidor lucia = new Servidor("Lucia", "Libre", 0);
+                Servidor maria = new Servidor("Maria", "Libre", 0);
+
+                Servidor manuel = new Servidor("Manuel", "Libre", 0);
+
+                Evento descanso = new Evento("descanso", tomas, 180, 30); // Mandar 2 parametros por pantalla (a que hora comienza el descanso, duracion del descanso) ===> van a reemplazar el 180 y el 30
+                Evento finDelDia = new Evento("finDelDia", 480); // Mandar 1 parametro por pantalla (cuanto dura la jornada laboral)
+
+                int colaMatricula = 0;
+                int colaRenovacion = 0;
+
+                Estadistica estadistica = new Estadistica();
+
+
+                List<Cliente> clientesMatriculaEnElSistema = new List<Cliente>();
+                List<Cliente> clientesLicenciaEnElSistema = new List<Cliente>();
+
+
+                Fila fila = new Fila(hora, eventoActual, proximaLlegadaClienteMatricula, proximaLlegadaClienteRenovacion, finAtencionMatriculaTomas, 
+                    finAtencionMatriculaAlicia, finAtencionMatriculaManuel, finAtencionRenovacionLucia, finAtencionRenovacionMaria, 
+                    finAtencionRenovacionManuel, descanso, finDelDia, tomas, alicia, lucia, maria, manuel, colaMatricula, colaRenovacion, 
+                    estadistica, clientesMatriculaEnElSistema, clientesLicenciaEnElSistema);
+
                 filaNueva = fila;
+                
             }
             else
             {
-                Clientes clienteActual = revisarClienteActual();
-                string evento = definirEvento(filaAnterior);
-                double hora = calcularHora(filaAnterior);
-                double rndLlegadaMatricula = generadorLlegadaMatricula.generarNumeros(); // REVISAR COMO TRABAJAMOS CON LOS RND
-                double tiempoEntreLlegadaMatricula = ;
-                double proximaLlegadaMatricula =  hora + tiempoEntreLlegadaMatricula;
-                double rndLlegadaLicencia = generadorRandomReposicion.NextDouble(); // REVISAR COMO TRABAJAMOS CON LOS RND
-                double tiempoEntreLlegadaLicencia = calcularReposicion(rndReposicion);
-                double proximaLlegadaLicencia = hora + tiempoEntreLlegadaLicencia;
-                double rndFinMatricula = filaAnterior.EnAlmacenamiento + reposicion - consumo; // REVISAR COMO TRABAJAMOS CON LOS RND
-                double tiempoHastaFinMatricula = ;
-                double finMatricula = hora + tiempoHastaFinMatricula;
-                double rndFinLicencia = obtenerKm(almacenamiento); // REVISAR COMO TRABAJAMOS CON LOS RND
-                double tiempoHastaFinLicencia = ;
-                double finLicencia = hora + tiempoHastaFinLicencia;
-                string estadoTomas = definirEstado("tomas", filaAnterior, evento, clienteActual);
-                int atendidosTomas = calcularAtendidos("tomas", filaAnterior);
-                string nombreClienteTomas = "";
-                string estadoAlicia = definirEstado("alicia", filaAnterior, evento);
-                int atendidosAlicia = calcularAtendidos("alicia", filaAnterior);
-                string nombreClienteAlicia = "";
-                string estadoLucia = definirEstado("lucia", filaAnterior, evento);
-                int atendidosLucia = calcularAtendidos("lucia", filaAnterior);
-                string nombreClienteLucia = "";
-                string estadoMaria = definirEstado("maria", filaAnterior, evento);
-                int atendidosMaria = calcularAtendidos("maria", filaAnterior);
-                string nombreClienteMaria = "";
-                string estadoManuel = definirEstado("manuel", filaAnterior, evento);
-                int atendidosManuel = calcularAtendidos("manuel", filaAnterior);
-                string nombreClienteManuel = "";
-                List<Clientes> colaClientesMatricula = revisarColaClientesMatricula();
-                List<Clientes> colaClientesLicencia = revisarColaClientesLicencia();
-                int contadorCliente = ;
 
 
+                Evento eventoActual = obtenerProximoEvento(filaAnterior.FinAtencionMatriculaTomas, filaAnterior.FinAtencionMatriculaAlicia, 
+                    filaAnterior.FinAtencionMatriculaManuel, filaAnterior.FinAtencionRenovacionLucia, 
+                    filaAnterior.FinAtencionRenovacionMaria, filaAnterior.FinAtencionRenovacionManuel, filaAnterior.Descanso, filaAnterior.FinDelDia, filaAnterior.ProximaLlegadaClienteMatricula,
+                    filaAnterior.ProximaLlegadaClienteRenovacion1);
+                switch (eventoActual.Nombre)
 
-                filaNueva = new Fila(clienteActual, evento, hora, rndLlegadaMatricula, tiempoEntreLlegadaMatricula, proximaLlegadaMatricula, rndLlegadaLicencia, tiempoEntreLlegadaLicencia, proximaLlegadaLicencia, rndFinMatricula, tiempoHastaFinMatricula,
-                    finMatricula, rndFinLicencia, tiempoHastaFinLicencia, finLicencia, estadoTomas, atendidosTomas, nombreClienteTomas, estadoAlicia, atendidosAlicia, nombreClienteAlicia, estadoLucia, atendidosLucia, nombreClienteLucia,
-                    estadoMaria, atendidosMaria, nombreClienteMaria, estadoManuel, atendidosManuel, nombreClienteManuel,
-                    colaClientesMatricula, colaClientesLicencia, contadorCliente);
+                {
+
+                    case "proximaLlegadaClienteMatricula":
+                        filaNueva = gestorLlegadas.generarFilaLlegadaClienteMatricula(filaAnterior);
+
+                        break;
+
+                    case "proximaLlegadaClienteRenovacion":
+                        filaNueva = gestorLlegadas.generarFilaLlegadaClienteRenovacion(filaAnterior);
+                        break;
+
+                    case "finAtencionMatriculaTomas":
+                        filaNueva = gestorFinesAtencion.generarFilaFinClienteMatriculaTomas(filaAnterior);
+                        break;
+
+                    case "finAtencionMatriculaAlicia":
+                        filaNueva = gestorFinesAtencion.generarFilaFinClienteMatriculaAlicia(filaAnterior);
+                        break;
+
+                    case "finAtencionRenovacionLucia":
+                        filaNueva = gestorFinesAtencion.generarFilaFinClienteRenovacionLucia(filaAnterior);
+                        break;
+
+                    case "finAtencionRenovacionMaria":
+                        filaNueva = gestorFinesAtencion.generarFilaFinClienteRenovacionMaria(filaAnterior);
+                        break;
+
+                    case "finAtencionMatriculaManuel":
+                        filaNueva = gestorFinesAtencion.generarFilaFinClienteMatriculaManuel(filaAnterior);
+                        break;
+
+                    case "finAtencionRenovacionManuel":
+                        filaNueva = gestorFinesAtencion.generarFilaFinClienteRenovacionManuel(filaAnterior);
+                        break;
+
+                    case "descanso":
+                        filaNueva = gestorDescansos.generarFilaDescanso(filaAnterior);
+                        break;
+
+                    case "finDelDia":
+                        filaNueva = gestorFinDia.generarFilaFinDelDia(filaAnterior);
+                        break;
+
+                    default:
+                        break;
+                }
+               
             }
             return filaNueva;
-
         }
 
-        public string definirEvento(Fila filaAnterior)
+       
+
+        public double obtenerUltimoFinAtencionServidores(Fila filaAnterior)
         {
-            string evento = "";
-            List<double> proximosEventos = new List<double> { filaAnterior.ProximaLlegadaMatricula, filaAnterior.ProximaLlegadaLicencia, filaAnterior.FinMatricula, filaAnterior.FinLicencia };
-            double posicionProximoEvento = proximosEventos.IndexOf(proximosEventos.Min());
-
-            switch (posicionProximoEvento)
+            List<double> listaTiempos = new List<double>();
+            listaTiempos.Add(0);
+            if (filaAnterior.FinAtencionMatriculaTomas != null)
             {
-                case 0:
-                    evento = "Llegada Cliente" + filaAnterior.ContadorCliente + " para Matricula";
-                    break;
-                case 1:
-                    evento = "Llegada Cliente" + filaAnterior.ContadorCliente + " para Licencia";
-                    break;
-                case 2:
-                    evento = "Fin Atención Cliente" + filaAnterior.ContadorCliente + " para Matricula";
-                    break;
-                case 3:
-                    evento = "Fin Atención Cliente" + filaAnterior.ContadorCliente + " para Licencia";
-                    break;
-
+                listaTiempos.Add(filaAnterior.FinAtencionMatriculaTomas.Tiempo);
+            }
+            if (filaAnterior.FinAtencionMatriculaAlicia != null)
+            {
+                listaTiempos.Add(filaAnterior.FinAtencionMatriculaAlicia.Tiempo);
+            }
+            if (filaAnterior.FinAtencionMatriculaManuel != null)
+            {
+                listaTiempos.Add(filaAnterior.FinAtencionMatriculaManuel.Tiempo);
+            }
+            if (filaAnterior.FinAtencionRenovacionLucia != null)
+            {
+                listaTiempos.Add(filaAnterior.FinAtencionRenovacionLucia.Tiempo);
+            }
+            if (filaAnterior.FinAtencionRenovacionMaria != null)
+            {
+                listaTiempos.Add(filaAnterior.FinAtencionRenovacionMaria.Tiempo);
+            }
+            if (filaAnterior.FinAtencionRenovacionManuel != null)
+            {
+                listaTiempos.Add(filaAnterior.FinAtencionRenovacionManuel.Tiempo);
             }
 
-            return evento;
+            return listaTiempos.Max();
+
         }
 
-
-        public double calcularHora(Fila filaAnterior)
+        
+        public Cliente buscarProximoCliente(List<Cliente> clientesEnElSistema)
         {
-            List<double> proximosEventos = new List<double> { filaAnterior.ProximaLlegadaMatricula, filaAnterior.ProximaLlegadaLicencia, filaAnterior.FinMatricula, filaAnterior.FinLicencia };
-
-            double proximoEvento = proximosEventos.Min();
-
-            return proximoEvento;
-        }
-
-        public string definirEstado(string nombre, Fila filaAnterior, string evento, Clientes clienteActual)
-        {
-            string estado = "";
-
-            switch (nombre)
+            Cliente cliente1 = null;
+            List<Cliente> SortedList = clientesEnElSistema.OrderByDescending(o => o.HoraIngreso).ToList();
+            foreach (Cliente cliente in SortedList)
             {
-                case "tomas":
-                    if (filaAnterior.ClienteSiendoAtendidoTomas == clienteActual.Nombre)    // COMPROBAR SI ES LLEGADA O FIN DE ATENCION
-                    {
-
-                    }
-                    estado = ;
-                    break;
-                case "alicia":
-                    estado = "Llegada Cliente" + filaAnterior.ContadorCliente + " para Licencia";
-                    break;
-                case "lucia":
-                    estado = "Fin Atención Cliente" + filaAnterior.ContadorCliente + " para Matricula";
-                    break;
-                case "maria":
-                    estado = "Fin Atención Cliente" + filaAnterior.ContadorCliente + " para Licencia";
-                    break;
-                case "manuel":
-                    estado = "Fin Atención Cliente" + filaAnterior.ContadorCliente + " para Licencia";
-                    break;
-
-            }
-             return estado;
-        }
-
-        public 
-
-        public void borrarFila(RenglonDistribucion renglon, List<RenglonDistribucion> tablaProbabilidad)
-        {
-            tablaProbabilidad.Remove(renglon);
-        }
-        public void agregarFila(double cantidad, double probabilidad, List<RenglonDistribucion> tablaProbabilidad)
-        {
-            RenglonDistribucion renglon = new RenglonDistribucion(cantidad, probabilidad);
-            tablaProbabilidad.Add(renglon);
-        }
-
-
-        private int hayExceso(double ks)
-        {
-            if (ks > 0)
-            {
-                return 1;
-            }
-            return 0;
-        }
-
-
-        //private double calcularReposicion(double rndReposicion)
-        //{
-        //    if (rndReposicion <= 0.599)
-        //    {
-        //        return 8000;
-        //    }
-        //    if (rndReposicion <= 0.999)
-        //    {
-        //        return 11000;
-        //    }
-        //    else
-        //    {
-        //        return -1;
-        //    }
-        //}
-        private double calcularReposicion(double rndReposicion)
-        {
-            double cantidad = -1;
-            foreach (RenglonDistribucion renglon in this.tablaProbabilidadReposicion)
-            {
-                if (rndReposicion < renglon.Hasta)
+                if (cliente.Estado == "Esperando Atencion")
                 {
-                    cantidad = renglon.Cantidad;
+                    cliente1 = cliente;
                     break;
                 }
             }
-            return cantidad;
+            return cliente1;
         }
 
-        private double calcularConsumo(double rndConsumo)
+        public Evento obtenerProximoEvento(Evento proximaLlegadaClienteMatricula, Evento proximaLlegadaClienteRenovacion, Evento finAtencionMatricula1, Evento finAtencionMatricula2, Evento finAtencionMatricula3,
+           Evento finAtencionRenovacion1, Evento finAtencionRenovacion2, Evento finAtencionRenovacion3, Evento descanso, Evento finDia)
         {
-            double cantidad = -1;
-            foreach (RenglonDistribucion renglon in this.tablaProbabilidadConsumo)
-            {
-                if (rndConsumo < renglon.Hasta)
-                {
-                    cantidad = renglon.Cantidad;
-                    break;
-                }
-            }
-            return cantidad;
+            List<Evento> proximosEventos = new List<Evento>();
+            proximosEventos.Add(proximaLlegadaClienteMatricula);
+            proximosEventos.Add(proximaLlegadaClienteRenovacion);
+            proximosEventos.Add(finAtencionMatricula1);
+            proximosEventos.Add(finAtencionMatricula2);
+            proximosEventos.Add(finAtencionMatricula3);
+            proximosEventos.Add(finAtencionRenovacion1);
+            proximosEventos.Add(finAtencionRenovacion2);
+            proximosEventos.Add(finAtencionRenovacion3);
+            proximosEventos.Add(descanso);
+            proximosEventos.Add(finDia);
+
+            return proximosEventos.Min();
+
         }
-        //private double calcularConsumo(double rndConsumo)
-        //{
-        //    if (rndConsumo <= 0.049)
-        //    {
-        //        return 6000;
-        //    }
-        //    if (rndConsumo <= 0.199)
-        //    {
-        //        return 7000;
-        //    }
-        //    if (rndConsumo <= 0.399)
-        //    {
-        //        return 8000;
-        //    }
-        //    if (rndConsumo <= 0.699)
-        //    {
-        //        return 9000;
-        //    }
-        //    if (rndConsumo <= 0.899)
-        //    {
-        //        return 10000;
-        //    }
-        //    if (rndConsumo <= 0.999)
-        //    {
-        //        return 11000;
-        //    }
-        //    else
-        //    {
-        //        return -1;
-        //    }
-        //}
+
+        
 
     }
 }
